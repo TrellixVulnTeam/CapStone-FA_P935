@@ -1,0 +1,135 @@
+/*Links*/
+a:link,
+a:visited {
+  background-color: white;
+  color: black;
+  border: 2px solid green;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+a:hover,
+a:active {
+  background-color: green;
+  color: white;
+}
+
+/*Input Fields*/
+input[type="text"],
+select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type="submit"] {
+  width: 100%;
+  background-color: #4caf50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type="submit"]:hover {
+  background-color: #45a049;
+}
+
+/*User DashBoard*/
+
+/* TO Keep*/
+#secondary {
+  height: 300px;
+  background: #f6f0e0;
+  border-top: #ffffff 2px solid;
+  margin: 0;
+  padding: 0;
+}
+
+.content {
+  height: 300px;
+  background: #ccc8b3;
+  border-top: #ffffff 2px solid;
+  margin: 0;
+  padding: 0;
+}
+
+#header {
+  height: 100px;
+  background-color: #f3f2ed;
+  margin: 0;
+  padding: 0;
+}
+
+#header h1 {
+  font-size: 1em;
+  margin: 0;
+  padding: 10px;
+}
+
+#header h1 a {
+  color: #000000;
+  background-color: #f3f2ed;
+}
+
+#doc3,
+.yui-t2 {
+  margin: auto;
+  text-align: left;
+  width: 57.69em;
+  *width: 56.3em;
+  min-width: 750px;
+}
+
+#doc3 {
+  margin: auto 10px;
+  width: auto;
+}
+
+.yui-t2 #yui-main {
+  float: right;
+  margin-left: -25em; /* IE: preserve layout at narrow widths */
+}
+
+.yui-t2 #yui-main .yui-b {
+  margin-left: 14.8456em;
+  *margin-left: 14.512em;
+}
+
+.yui-t2 .yui-b {
+  float: left;
+  width: 13.8456em;
+  *width: 13.512em;
+}
+body {
+  text-align: center;
+}
+
+.yui-b {
+  position: relative;
+  _position: static;
+}
+
+#yui-main .yui-b {
+  position: static;
+  float: none;
+  width: auto;
+}
+
+#yui-main {
+  width: 100%;
+}
+
+/*Test*/
+.mainapp{
+  background-color: rgba(4, 190, 246, 0.582);
+  height:auto;
+}
