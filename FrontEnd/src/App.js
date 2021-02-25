@@ -10,8 +10,11 @@ import Login from './components/pages/Login';
 import DashboardUser from "./components/Dashboards/DashboardUser"
 import DashboardManager from "./components/Dashboards/DashboardManager"
 import DashboardCon from "./components/Dashboards/DashboardCon"
+import Modal from "react-modal"
 
 
+//fix browser modal error
+Modal.setAppElement('#root')
 function App() {
   return (
     <>

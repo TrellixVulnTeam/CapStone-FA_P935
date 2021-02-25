@@ -12,9 +12,29 @@ import Profile from "./Profile"
 import Requests from "./Requests"
 import Update from "./Update"
 
+import { useHistory } from "react-router-dom"
 
 export default function UserHeader() {
+    
+    const history = useHistory()
+    
     const [key, setKey] = useState('home');
+
+    //logout 
+    async function logout() {
+
+        try {
+            //empty all catches
+
+
+            //and then direct to home page
+            history.push('/')
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
 
     return (
         <div className="col-sm-100 offset-sm-0">
@@ -26,7 +46,7 @@ export default function UserHeader() {
                         <Badge pill variant="dark">{'your Last Login was: 31/02/2021 5:00 pm '}</Badge>
                     </Nav>
                     <Nav>
-                        <Button variant="secondary">Logout</Button>
+                        <Button onClick={logout} variant="secondary">Logout</Button>
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>

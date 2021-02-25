@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import '../../App.css';
 import './Register.css';
-import Popup from 'reactjs-popup';
+//import Popup from 'reactjs-popup';
 import Navbar from "../Navbar"
 
 import { useHistory } from "react-router-dom"
@@ -66,6 +66,7 @@ export default function Register() {
                 <input type="password" className="form-control" placeholder="Re-Password" onChange={(e) => setRepassword(e.target.value)} value={repassword} /><br />
                 <button onClick={signUp} className="btn btn-primary">Sign Up</button>
             </div>
+
             <div className='sign-up'></div>
         </>
     )
