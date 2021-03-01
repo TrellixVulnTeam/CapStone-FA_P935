@@ -7,7 +7,7 @@ function Section() {
   return (
     <div className='section-container'>
 
-<video src='/videos/video-1.mp4' autoPlay loop muted />
+<video src='../videos/video-1.mp4' autoPlay loop muted />
       <h1>CREATE YOUR SOLUTION FOR YOUR RETIREMENT </h1>
       <p>With Finicial Web Advisor You Can Start Creating Your Blueprint To You Finicial Freedoom</p>
       <div className='section-btns'>

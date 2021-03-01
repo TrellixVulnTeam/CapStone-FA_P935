@@ -1,15 +1,14 @@
 import React, { useState } from 'react'
 import '../../App.css';
 import './Register.css';
-//import Popup from 'reactjs-popup';
 import Navbar from "../Navbar"
-
+import axios from "axios"
 import { useHistory } from "react-router-dom"
 
 export default function Register() {
     //----------------------------------
-    const history = useHistory()
-
+    //const history = useHistory()
+    const [error, setError] = useState("")
 
     //use states:
     const [fname, setFname] = useState("")
@@ -19,39 +18,49 @@ export default function Register() {
     const [password, setPassword] = useState("")
     const [repassword, setRepassword] = useState("")
 
-    //sending data to the server
-    //this is just a test so we can 
-    async function signUp() {
-        let user = { fname, lname, phone, email, password, repassword }
-        console.warn(user);
-        try {
-            let result = await fetch(`https://webhook.site/72e2b53d-0825-4caf-9cf9-a226be2efabc`, {
-                //let result = await fetch(`http://localhost:8080/api/register`, {
-                method: 'post',
-                mode: 'no-cors',
-                headers: {
-                    'Accept': 'application/json',
-                    'contentType': 'application/json'
-                },
-                body: JSON.stringify({
-                    firstName: fname,
-                    lastName: lname,
-                    PhoneNumber: phone,
-                    EmailAddress: email,
-                    PasswordUsed: password,
-                    rePasswordUsed: repassword
-                })
-            })
-            console.log(result)
-            //result=await result.json()
-            localStorage.setItem("user-info", JSON.stringify(result))
-            history.push('/')
-        } catch (error) {
-            console.log(error)
+    //using axios
+    const signUp = e => {
+        e.preventDefault();
+        let user = {
+            "first_name": fname,
+            "last_name": lname,
+            "phone": phone,
+            "email": email,
+            "password": password,
+            "authlevel": "user"
         }
-        //localStorage.setItem("user-info",JSON.stringify(result))
+        if (password !== repassword) {
+            setError("Passwords does not match")
+        } else {
+            console.log(user)
+            axios.post('http://localhost:8080/user', user)
+                .then(res => {
+                    //console.log(res.data.errors.email.message)
+                    console.log(res)
+                    let errors = res.data.errors
+                    let errorReport = []
+                    console.log(`errors are here ${errors}`)
+                    for (const property in errors) {
+                        console.log(`${property}: ${errors[property].message}`);
+                        errorReport.push(`${property}: ${errors[property].message}`)
+                    }
+                    setError(errorReport)
+                    //console.log()
+                    if (errorReport.length === 0 && res.data.keyValue.email.length <= 0) {
+                        //history.push('/')
+                    } else {
+                        if (res.data.keyValue.email.length > 0) {
+                            setError("User Already Exist")
+                        } else if (errorReport.length !== 0) {
+                            setError(errorReport)
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.log(`Something went wrong ${error}`)
+                })
+        }
     }
-    //----------------------------------
 
     return (
         <>
@@ -65,9 +74,13 @@ export default function Register() {
                 <input type="password" className="form-control" placeholder="Password" onChange={(e) => setPassword(e.target.value)} value={password} /><br />
                 <input type="password" className="form-control" placeholder="Re-Password" onChange={(e) => setRepassword(e.target.value)} value={repassword} /><br />
                 <button onClick={signUp} className="btn btn-primary">Sign Up</button>
+                <br />
+                <br />
+                <h1>{error}</h1>
+                <br />
+                <br />
             </div>
-
-            <div className='sign-up'></div>
+            {/* {<div className='sign-up'></div>} */}
         </>
     )
 }

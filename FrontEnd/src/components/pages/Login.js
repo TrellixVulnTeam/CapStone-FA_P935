@@ -1,42 +1,58 @@
 import React, { useState } from 'react'
 import { useHistory } from "react-router-dom"
 import Navbar from "../Navbar"
+import axios from "axios"
+
 
 function Login() {
   //-----------------------------------
   const history = useHistory()
-
+  const [error, seterror] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
-  async function logIn() {
-      let user = { email, password }
-      console.warn(user);
-      try {
-          //change link and method for 
-          let result = await fetch(`https://webhook.site/72e2b53d-0825-4caf-9cf9-a226be2efabc`, {
-              //let result = await fetch(`http://localhost:8080/api/register`, {
-              method: 'post',
-              mode: 'no-cors',
-              headers: {
-                  'Accept': 'application/json',
-                  'contentType': 'application/json'
-              },
-              body: JSON.stringify({
-                  EmailAddress: email,
-                  PasswordUsed: password,
-              })
-          })
-          console.log(result)
-          //result=await result.json()
-          localStorage.setItem("user-info", JSON.stringify(result))
-          history.push('/')
-      } catch (error) {
-          console.log(error)
-      }
-      //localStorage.setItem("user-info",JSON.stringify(result))
+  const logIn = e => {
+    e.preventDefault();
+    let user = {
+      "email": email,
+      "password": password
+    }
+    if (user.email === "" || user.password === "") {
+      seterror("Some fields are empty")
+    } else {
+      axios.post("http://localhost:8080/users/login", user)
+        .then(res => {
+          console.log(res)
+          const resLen = res.data.length
+          if (resLen === 0) {
+            //this response is for all users
+            seterror('No User Found Please register')
+          } else {
+            //catch response info and analyse them
+            const resInfo = res.data[0]
+            if (resInfo.password === user.password) {
+              //move to dashboard for user
+              // console.log(resInfo)
+              // console.log(typeof (resInfo.first_name))
+              if (resInfo.authlevel === "manager") {
+                //use manager data
+                history.push('/dashboardManager')
+              } else if (resInfo.authlevel === "consult") {
+                //use consultant data
+                history.push('/dashboardCon')
+              } else if (resInfo.authlevel === "user") {
+                //use user data
+                history.push('/dashboardUser')
+              }
+            } else {
+              seterror("Incorrect Password")
+            }
+          }
+        }
+        )
+    }
   }
-  
+
   //-----------------------------------
   return (
     <div>
@@ -47,6 +63,10 @@ function Login() {
         <input type="password" className="form-control" placeholder="Password" onChange={(e) => setPassword(e.target.value)} value={password} /><br />
         <button onClick={logIn} className="btn btn-primary">Login</button>
       </div>
+      <br />
+      <br />
+      <br />
+      <h1>{error}</h1>
     </div>
   )
 }

@@ -2,7 +2,7 @@ import React from 'react';
 //import Navbar from './components/Navbar';
 import './App.css';
 import Home from './components/pages/Home';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import {Services} from './components/pages/Services/Services';
 import About from './components/pages/About';
 import Register from './components/pages/Register';
@@ -21,14 +21,15 @@ function App() {
       <Router>
         {/*<Navbar />*/}
         <Switch>
-          <Route path='/' exact component={Home} />
-          <Route path='/about' component={About} />
-          <Route path='/services' component={Services} />
-          <Route path='/register' component={Register} />
-          <Route path='/login' component={Login} />
-          <Route path='/dashboardUser' component={DashboardUser} />
-          <Route path='/dashboardManager' component={DashboardManager} />
-          <Route path='/dashboardCon' component={DashboardCon} />
+          <Route exact path='/'  component={Home} />
+          <Route exact path='/about' component={About} />
+          <Route exact path='/services' component={Services} />
+          <Route exact path='/register' component={Register} />
+          <Route exact path='/login' component={Login} />
+          <Route exact path='/dashboardUser' component={DashboardUser} />
+          <Route exact path='/dashboardManager' component={DashboardManager} />
+          <Route exact path='/dashboardCon' component={DashboardCon} />
+          <Redirect to="/"/>
         </Switch>
       </Router>
     </>
