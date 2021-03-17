@@ -13,7 +13,7 @@ import Requests from "./Requests"
 import Update from "./Update"
 
 import { useHistory } from "react-router-dom"
-
+import Auth from "../../../Authentication/Auth"
 export default function UserHeader() {
     
     const history = useHistory()
@@ -28,6 +28,7 @@ export default function UserHeader() {
 
 
             //and then direct to home page
+            localStorage.clear();
             history.push('/')
         } catch (error) {
             console.log(error)

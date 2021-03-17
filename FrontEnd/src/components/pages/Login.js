@@ -1,15 +1,21 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useHistory } from "react-router-dom"
 import Navbar from "../Navbar"
 import axios from "axios"
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import Auth from "../Authentication/Auth"
+
 
 
 function Login() {
+
   //-----------------------------------
   const history = useHistory()
   const [error, seterror] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+
+
 
   const logIn = e => {
     e.preventDefault();
@@ -22,7 +28,7 @@ function Login() {
     } else {
       axios.post("http://localhost:8080/users/login", user)
         .then(res => {
-          console.log(res)
+          //console.log(res)
           const resLen = res.data.length
           if (resLen === 0) {
             //this response is for all users
@@ -31,14 +37,23 @@ function Login() {
             //catch response info and analyse them
             const resInfo = res.data[0]
             if (resInfo.password === user.password) {
-              //move to dashboard for user
-              // console.log(resInfo)
-              // console.log(typeof (resInfo.first_name))
+              const userTostore={
+                "first_name":resInfo.first_name,
+                "last_name":resInfo.last_name,
+                "phone":resInfo.phone,
+                "email":resInfo.email,
+                "password":resInfo.password,
+              }
+
+              localStorage.setItem('user', resInfo.email)
+              localStorage.setItem('LoginStatus', true)
               if (resInfo.authlevel === "manager") {
                 //use manager data
+                // auth.setAuth()
                 history.push('/dashboardManager')
               } else if (resInfo.authlevel === "consult") {
                 //use consultant data
+                // auth.setAuth()
                 history.push('/dashboardCon')
               } else if (resInfo.authlevel === "user") {
                 //use user data
@@ -56,6 +71,7 @@ function Login() {
   //-----------------------------------
   return (
     <div>
+
       <Navbar />
       <div className="col-sm-6 offset-sm-3">
         <h1>Login Page</h1>
@@ -67,6 +83,7 @@ function Login() {
       <br />
       <br />
       <h1>{error}</h1>
+
     </div>
   )
 }

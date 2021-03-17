@@ -61,9 +61,9 @@ export default function Register() {
                 })
         }
     }
-
     return (
         <>
+        
             <Navbar />
             <div className="col-sm-6 offset-sm-3">
                 <h1>Register Page</h1>
@@ -80,7 +80,7 @@ export default function Register() {
                 <br />
                 <br />
             </div>
-            {/* {<div className='sign-up'></div>} */}
+            {/* <div className='sign-up'></div> */}
         </>
     )
 }

@@ -27,6 +27,7 @@ export default function ManagerHeader() {
     
     
                 //and then direct to home page
+                localStorage.clear();
                 history.push('/')
             } catch (error) {
                 console.log(error)

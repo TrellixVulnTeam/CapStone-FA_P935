@@ -26,6 +26,7 @@ export default function ConsultantHeader() {
 
 
             //and then direct to home page
+            localStorage.clear();
             history.push('/')
         } catch (error) {
             console.log(error)
