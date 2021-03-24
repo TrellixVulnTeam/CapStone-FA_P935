@@ -11,7 +11,6 @@ export default function DashboardManagerDetails() {
     const [reportType, setreportType] = useState("")
 
     useEffect(() => {
-
         const interval = setInterval(() => {
             //-----------------------------------------
             axios.post("http://localhost:8080/managerrequests", "")

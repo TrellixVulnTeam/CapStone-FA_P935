@@ -25,9 +25,9 @@ function Footer() {
           </form>
         </div>
       </section>
-      <div class='footer-links'>
+      <div className='footer-links'>
         <div className='footer-link-wrapper'>
-          <div class='footer-link-items'>
+          <div className='footer-link-items'>
             <h2>About Us</h2>
             <Link to='/sign-up'>How it works</Link>
             <Link to='/'>Testimonials</Link>
@@ -35,7 +35,7 @@ function Footer() {
             <Link to='/'>Investors</Link>
             <Link to='/'>Terms of Service</Link>
           </div>
-          <div class='footer-link-items'>
+          <div className='footer-link-items'>
             <h2>Development Team</h2>
             <Link to='/'>Project Manager</Link>
             <Link to='/'>Team</Link>
@@ -47,14 +47,14 @@ function Footer() {
 
         </div>
       </div>
-      <section class='social-media'>
-        <div class='social-media-wrap'>
-          <div class='footer-logo'>
+      <section className='social-media'>
+        <div className='social-media-wrap'>
+          <div className='footer-logo'>
             <Link to='/' className='social-logo'>
               Financial Advisor
             </Link>
           </div>
-          <small class='website-rights'>Financial Advisor © 2021</small>
+          <small className='website-rights'>Financial Advisor © 2021</small>
         </div>
       </section>
     </div>

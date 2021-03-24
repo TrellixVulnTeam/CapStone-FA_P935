@@ -104,25 +104,29 @@ export default function Requests() {
             return (
                 <div className="Scroll_Pane">
                     <table id="customers">
-                        <tr>
-                            <th>Report Type</th>
-                            <th>Topic</th>
-                            <th>Urgency</th>
-                            <th>Description</th>
-                            <th>Date</th>
-                        </tr>
-                        {
-                            requests.map(
-                                item =>
-                                    <tr key={item._id}>
-                                        <td>{item.reporttype}</td>
-                                        <td>{item.topic}</td>
-                                        <td>{item.urgency}</td>
-                                        <td>{item.description}</td>
-                                        <td>{moment(item.created).format("LLL")}</td>
-                                    </tr>
-                            )
-                        }
+                        <thead>
+                            <tr>
+                                <th>Report Type</th>
+                                <th>Topic</th>
+                                <th>Urgency</th>
+                                <th>Description</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                requests.map(
+                                    item =>
+                                        <tr key={item._id}>
+                                            <td>{item.reporttype}</td>
+                                            <td>{item.topic}</td>
+                                            <td>{item.urgency}</td>
+                                            <td>{item.description}</td>
+                                            <td>{moment(item.created).format("LLL")}</td>
+                                        </tr>
+                                )
+                            }
+                        </tbody>
                     </table>
                 </div>
             )
@@ -153,21 +157,22 @@ export default function Requests() {
                     <br />
                     <br />
                     <table id="customers">
-                        <tr>
-                            <td>ٌRespond 01</td>
-                            <td><button className="btn btn-primary">Download Report</button></td>
-                        </tr>
+                        <tbody>
+                            <tr>
+                                <td>ٌRespond 01</td>
+                                <td><button className="btn btn-primary">Download Report</button></td>
+                            </tr>
 
-                        <tr>
-                            <td>ٌRespond 02</td>
-                            <td><button className="btn btn-primary">Download Report</button></td>
-                        </tr>
+                            <tr>
+                                <td>ٌRespond 02</td>
+                                <td><button className="btn btn-primary">Download Report</button></td>
+                            </tr>
 
-                        <tr>
-                            <td>ٌRespond 03</td>
-                            <td><button className="btn btn-primary">Download Report</button></td>
-                        </tr>
-
+                            <tr>
+                                <td>ٌRespond 03</td>
+                                <td><button className="btn btn-primary">Download Report</button></td>
+                            </tr>
+                        </tbody>
                     </table>
 
                 </div>

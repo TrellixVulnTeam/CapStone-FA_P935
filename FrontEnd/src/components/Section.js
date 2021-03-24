@@ -22,7 +22,7 @@ function Section() {
           className='btns'
           buttonStyle='btn--primary'
           buttonSize='btn--large'
-          onClick={console.log('hey')}
+          // onClick={console.log('hey')}
         >
           WATCH TRAILER <i className='far fa-play-circle' />
         </Button>
