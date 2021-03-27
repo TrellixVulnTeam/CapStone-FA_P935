@@ -64,7 +64,6 @@ class DashboardUserDetails extends React.Component {
     render() {
         if (this.state.isLoading) {
             return (
-                // <div className="fa fa-spinner fa-spin">Loading ...</div>
                 <Spinner animation="border" role="status">
                     <span className="sr-only">Loading...</span>
                 </Spinner>
@@ -91,7 +90,6 @@ class DashboardUserDetails extends React.Component {
                     const radius = innerRadius + (outerRadius - innerRadius) * 0.6;
                     const x = cx + radius * Math.cos(-midAngle * RADIAN);
                     const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
                     return (
                         <text x={x} y={y} fill="black" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
                             {`${(percent * 100).toFixed(0)}%`}
@@ -109,19 +107,16 @@ class DashboardUserDetails extends React.Component {
                                 <h1>{`${balanceSheetData[length].Cash}`}</h1>
                                 <h1>{`CAD`}</h1>
                             </div>
-
                             <div className="square B">
                                 <h1>Accounts Payable</h1>
                                 <h1>{`${balanceSheetData[length].Accounts_Payable}`}</h1>
                                 <h1>{`CAD`}</h1>
                             </div>
-
                             <div className="square C">
                                 <h1>Accounts Receivable</h1>
                                 <h1>{`${balanceSheetData[length].Accounts_Receivable}`}</h1>
                                 <h1>{`CAD`}</h1>
                             </div>
-
                             <div className="square D">
                                 <h1>Accrued Expenses</h1>
                                 <h1>{`${balanceSheetData[length].Accrued_expenses}`}</h1>
@@ -141,7 +136,7 @@ class DashboardUserDetails extends React.Component {
                                         <tr >
                                             <th>#</th>
                                             {
-                                                balanceSheetData.map(data =>
+                                                balanceSheetData.slice(balanceSheetData.length - 5, balanceSheetData.length).map(data =>
                                                     <th key={data._id}>{`${data.year}`}</th>
                                                 )
                                             }
@@ -149,7 +144,7 @@ class DashboardUserDetails extends React.Component {
                                         <tr>
                                             <th>Cash</th>
                                             {
-                                                balanceSheetData.map(data =>
+                                                balanceSheetData.slice(balanceSheetData.length - 5, balanceSheetData.length).map(data =>
                                                     <td key={data._id}>{`${data.Cash}`}</td>
                                                 )
                                             }
@@ -157,7 +152,7 @@ class DashboardUserDetails extends React.Component {
                                         <tr>
                                             <th>Accounts Payable</th>
                                             {
-                                                balanceSheetData.map(data =>
+                                                balanceSheetData.slice(balanceSheetData.length - 5, balanceSheetData.length).map(data =>
                                                     <td key={data._id}>{`${data.Accounts_Payable}`}</td>
                                                 )
                                             }
@@ -165,7 +160,7 @@ class DashboardUserDetails extends React.Component {
                                         <tr>
                                             <th>Accounts Receivable</th>
                                             {
-                                                balanceSheetData.map(data =>
+                                                balanceSheetData.slice(balanceSheetData.length - 5, balanceSheetData.length).map(data =>
                                                     <td key={data._id}>{`${data.Accounts_Receivable}`}</td>
                                                 )
                                             }
@@ -173,7 +168,7 @@ class DashboardUserDetails extends React.Component {
                                         <tr>
                                             <th>Accrued Expenses</th>
                                             {
-                                                balanceSheetData.map(data =>
+                                                balanceSheetData.slice(balanceSheetData.length - 5, balanceSheetData.length).map(data =>
                                                     <td key={data._id}>{`${data.Accrued_expenses}`}</td>
                                                 )
                                             }
@@ -181,7 +176,7 @@ class DashboardUserDetails extends React.Component {
                                         <tr>
                                             <th>Inventory</th>
                                             {
-                                                balanceSheetData.map(data =>
+                                                balanceSheetData.slice(balanceSheetData.length - 5, balanceSheetData.length).map(data =>
                                                     <td key={data._id}>{`${data.Inventory}`}</td>
                                                 )
                                             }
@@ -192,7 +187,7 @@ class DashboardUserDetails extends React.Component {
                         </main>
                         <main className="main">
                             <div className="square A2">
-                                <h1>{`Cash`}</h1>
+                                <h1>{`Accounts_Payable Vs Accounts_Receivable Vs Unearned_Revenue`}</h1>
                                 <ResponsiveContainer width={`100%`} height={200}>
                                     <AreaChart
                                         data={balanceSheetDataGraphdate}
@@ -237,7 +232,6 @@ class DashboardUserDetails extends React.Component {
                                     </PieChart>
                                 </ResponsiveContainer>
                             </div>
-
                             <div className="square B">
                                 <PieChart width={350} height={350} onMouseEnter={this.onPieEnter}>
                                     <Pie
@@ -257,7 +251,6 @@ class DashboardUserDetails extends React.Component {
 
                                 </PieChart>
                             </div>
-
                             <div className="square C">
                                 <ResponsiveContainer width="100%" height="100%">
                                     <PieChart width={350} height={350}>
@@ -278,8 +271,6 @@ class DashboardUserDetails extends React.Component {
                                     </PieChart>
                                 </ResponsiveContainer>
                             </div>
-
-
                         </main>
                     </div>
                 )
@@ -288,10 +279,7 @@ class DashboardUserDetails extends React.Component {
                     <h1>There is no data yet ...</h1>
                 )
             }
-
         }
-
-
     }
 }
 

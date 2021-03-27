@@ -37,11 +37,10 @@ export default function ManagerHeader() {
     return (
         <div className="col-sm-100 offset-sm-0">
             <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-                <Navbar.Brand >{`John Doe User`}</Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="mr-auto">
-                        <Badge pill variant="dark">{'your Last Login was: 31/02/2021 5:00 pm '}</Badge>
+
                     </Nav>
                     <Nav>
                         <Button onClick={logout} variant="secondary">Logout</Button>

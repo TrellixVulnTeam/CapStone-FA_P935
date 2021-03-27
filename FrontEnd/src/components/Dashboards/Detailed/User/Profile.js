@@ -39,7 +39,6 @@ export default function Profile() {
 
 
     //catch user cards
-
     useEffect(() => {
         const user = {
             "email": localStorage.getItem("user"),
@@ -56,36 +55,36 @@ export default function Profile() {
     function handleCardTablesetActive(cardId) {
         const cardToUpdate = {
             _id: cardId._id,
-            cardstatus:"Active",
-            card_holder:cardId.card_holder,
-            cardnumber:cardId.cardnumber,
-            cardexpiryMonth:cardId.cardexpiryMonth,
-            cardexpiryYear:cardId.cardexpiryYear,
-            cardsec:cardId.cardsec,
-            email:cardId.email
+            cardstatus: "Active",
+            card_holder: cardId.card_holder,
+            cardnumber: cardId.cardnumber,
+            cardexpiryMonth: cardId.cardexpiryMonth,
+            cardexpiryYear: cardId.cardexpiryYear,
+            cardsec: cardId.cardsec,
+            email: cardId.email
         }
-        axios.post('http://localhost:8080/card/update',cardToUpdate)
-        .then(res => {
-            console.log(res)
-            // history.push('/dashboardUser')
-            // window.location.reload(false);
-            setpageRefresh(pageRefresh+1)
-            
-        })
+        axios.post('http://localhost:8080/card/update', cardToUpdate)
+            .then(res => {
+                console.log(res)
+                // history.push('/dashboardUser')
+                // window.location.reload(false);
+                setpageRefresh(pageRefresh + 1)
+
+            })
     }
     function handleCardTablesetDelete(cardId) {
         console.log(cardId._id)
         const cardToDelete = {
             _id: cardId._id
         }
-        axios.post('http://localhost:8080/card/delete',cardToDelete)
-        .then(res => {
-            // console.log(res)
-            // history.push('/dashboardUser')
-            // window.location.reload(false);
-            setpageRefresh(pageRefresh+1)
+        axios.post('http://localhost:8080/card/delete', cardToDelete)
+            .then(res => {
+                // console.log(res)
+                // history.push('/dashboardUser')
+                // window.location.reload(false);
+                setpageRefresh(pageRefresh + 1)
 
-        })
+            })
     }
     function displayCards() {
         /*----------------------------------*/
@@ -98,31 +97,33 @@ export default function Profile() {
         } else {
             return (
                 <table>
-                    <tr>
-                        <th>Card Holder</th>
-                        <th>Expiry Month</th>
-                        <th>Expiry Year</th>
-                        <th>Card Number</th>
-                        <th>Security Code</th>
-                        <th>Card Status</th>
-                        <th>Set Active</th>
-                        <th>Delete</th>
-                    </tr>
-                    {
-                        userCards.map(
-                            item =>
-                                <tr key={item._id}>
-                                    <td>{item.card_holder}</td>
-                                    <td>{item.cardexpiryMonth}</td>
-                                    <td>{item.cardexpiryYear}</td>
-                                    <td>{item.cardnumber}</td>
-                                    <td>{item.cardsec}</td>
-                                    <td>{item.cardstatus}</td>
-                                    <td><button className="btn btn-primary" onClick={() => handleCardTablesetActive(item)}>Set Active</button></td>
-                                    <td><button className="btn btn-primary" onClick={() => handleCardTablesetDelete(item)}>delete</button></td>
-                                </tr>
-                        )
-                    }
+                    <tbody>
+                        <tr>
+                            <th>Card Holder</th>
+                            <th>Expiry Month</th>
+                            <th>Expiry Year</th>
+                            <th>Card Number</th>
+                            <th>Security Code</th>
+                            <th>Card Status</th>
+                            <th>Set Active</th>
+                            <th>Delete</th>
+                        </tr>
+                        {
+                            userCards.map(
+                                item =>
+                                    <tr key={item._id}>
+                                        <td>{item.card_holder}</td>
+                                        <td>{item.cardexpiryMonth}</td>
+                                        <td>{item.cardexpiryYear}</td>
+                                        <td>{item.cardnumber}</td>
+                                        <td>{item.cardsec}</td>
+                                        <td>{item.cardstatus}</td>
+                                        <td><button className="btn btn-primary" onClick={() => handleCardTablesetActive(item)}>Set Active</button></td>
+                                        <td><button className="btn btn-primary" onClick={() => handleCardTablesetDelete(item)}>delete</button></td>
+                                    </tr>
+                            )
+                        }
+                    </tbody>
                 </table>
 
             )
@@ -198,9 +199,6 @@ export default function Profile() {
                 setupdateProfileModalError("Password does not match")
             }
         }
-
-
-        //include logout action with redirection to home page
     }
 
     function openToUpdateProfile() {
@@ -248,7 +246,7 @@ export default function Profile() {
                         setCardExpYear("")
                         setcardSecCode("")
                         setAddcardmodal(false)
-                        setpageRefresh(pageRefresh+1)
+                        setpageRefresh(pageRefresh + 1)
                     } else {
                         setcardModalError("something went wrong")
                     }
@@ -263,15 +261,12 @@ export default function Profile() {
 
     function openAddCard() {
         //catch user card information and put them in place holder and hide security number
-
-
         setAddcardmodal(true)
     }
     return (
         <div>
 
             <div className="profile">
-                <h1>Hello from profile</h1>
                 <div className="myDiv">
                     <br />
                     <br />

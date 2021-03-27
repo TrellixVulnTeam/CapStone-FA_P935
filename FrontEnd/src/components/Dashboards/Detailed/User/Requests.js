@@ -18,7 +18,7 @@ export default function Requests() {
 
     const [pageRefresh, setpageRefresh] = useState(0)
     const [requests, setrequests] = useState([])
-
+    const [toUserRequests, settoUserRequests] = useState([])
     const [requestModal, setrequestModal] = useState(false)
     const [errorMessage, seterrorMessage] = useState("")
 
@@ -47,17 +47,26 @@ export default function Requests() {
 
     //load requests
     useEffect(() => {
-        const user = {
-            email: localStorage.getItem("user"),
-        }
-        axios.post("http://localhost:8080/userrequests", user)
-            .then(res => {
-                const requestData = res.data
-                setrequests([...requestData])
-                console.log(requests)
-            })
+        const interval = setInterval(() => {
+            const user = {
+                email: localStorage.getItem("user"),
+            }
+            axios.post("http://localhost:8080/userrequests", user)
+                .then(res => {
+                    const requestData = res.data
+                    setrequests([...requestData])
+                })
+            // axios.post('http://localhost:8080/findrequestsdone', "")
+            axios.post('http://localhost:8080/finduserrequestsdone', user)
+                .then(res => {
+                    const data = res.data
+                    settoUserRequests([...data])
+                    // console.log(toUserRequests)
+                })
 
 
+        }, 1000);
+        return () => clearInterval(interval);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pageRefresh])
 
@@ -93,7 +102,6 @@ export default function Requests() {
     }
 
     function openAndUpdateRequest() {
-
         setrequestModal(true)
     }
 
@@ -132,11 +140,99 @@ export default function Requests() {
             )
         }
     }
+    /*
+    consultant: "603a72704ac2f68378f66c3b"
+    created: "2021-03-26T11:28:42.668Z"
+    email: "jane@doe.ca"
+    filetoDownload: "Jane Doe_jane@doe.ca_605d30523ef05e8390cbc4b6_Balance_Sheet.xlsx"
+    topic: "2020 cash"
+    user: "Jane Doe"
+    __v: 0
+    _id: "605dc56a48e50bc51c1a2d0e"
+    */
+    function downloadCompletedReport(value) {
+        const reportToDownload = {
+            file: value
+        }
+        // console.log(reportToDownload.file)
+
+        // console.log(reportToDownload)
+
+        //----------------------------------
+
+        axios.post("http://localhost:8080/userreporttodownload", reportToDownload)
+            .then(async res => {
+                // console.log(res.data)
+                // const url = window.URL.createObjectURL(new Blob([res.data]));
+                // const link = document.createElement('a');
+                // link.href = url;
+                // link.setAttribute('download', `${reportToDownload.file}`);
+                // document.body.appendChild(link);
+                // link.click();
+                // res.blob().then(blob => {
+                //     let url = window.URL.createObjectURL(blob);
+                //     let a = document.createElement('a');
+                //     a.href = url;
+                //     a.download = `${reportToDownload.file}`;
+                //     a.click();
+                // });
+                // let link = document.createElement("a");
+                // link.download = `${reportToDownload.file}`;
+                // let blob = new Blob(["Hello, world!"], { type: "text/plain" });
+                // link.href = URL.createObjectURL(blob);
+                // link.click();
+                // URL.revokeObjectURL(link.href);
+
+                console.log(res)
+                // //-------------------------
+                // const url = await window.URL.createObjectURL(new Blob([res.headers]));
+                // const link = document.createElement('a');
+                // link.href =  url;
+                // // link.setAttribute('download', `${reportToDownload.file}`);
+                // // link.setAttribute('download', `${reportToDownload.file}`);
+                // link.setAttribute('download', `armin 2017 (3).JPG`);
+                // document.body.appendChild(link);
+                // link.click();
+
+            })
+        //----------------------------------
+
+    }
+
+    function viewCompletedReports() {
+        if (toUserRequests.length === 0) {
+            return (
+                <h1>No Requests Completed</h1>
+            )
+        } else {
+            return (
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>Topic</th>
+                            <th>Date</th>
+                            <th>Download</th>
+                        </tr>
+                        {
+                            toUserRequests.map(data =>
+                                <tr key={data._id}>
+                                    <td>{data.topic}</td>
+                                    <td>{moment(data.created).format("LLL")}</td>
+                                    <td><button className="btn btn-primary" onClick={() => downloadCompletedReport(data.filetoDownload)}>Download Report</button></td>
+                                </tr>
+                            )
+                        }
+
+                    </tbody>
+                </table>
+            )
+
+        }
+    }
 
     return (
         <div>
             <div className="profile">
-                <h1>Hello from Requests</h1>
                 <div className="myDiv">
                     <br />
                     <br />
@@ -153,28 +249,9 @@ export default function Requests() {
                     <br />
                     <br />
                     <h1>Responds Here</h1>
-
+                    {viewCompletedReports()}
                     <br />
                     <br />
-                    <table id="customers">
-                        <tbody>
-                            <tr>
-                                <td>ٌRespond 01</td>
-                                <td><button className="btn btn-primary">Download Report</button></td>
-                            </tr>
-
-                            <tr>
-                                <td>ٌRespond 02</td>
-                                <td><button className="btn btn-primary">Download Report</button></td>
-                            </tr>
-
-                            <tr>
-                                <td>ٌRespond 03</td>
-                                <td><button className="btn btn-primary">Download Report</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-
                 </div>
             </div>
             <div>

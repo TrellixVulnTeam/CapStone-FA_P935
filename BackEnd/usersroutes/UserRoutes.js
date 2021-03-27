@@ -5,15 +5,38 @@ const userModel = require('../model/User');
 const cardModel = require('../model/UsersCards');
 const userRequestModel = require('../model/UserRequest')
 const balancesheetModel = require('../model/UserBalanceSheet')
+const toManagerRequestModel = require('../model/ToManagerRequest')
+const ToConsultRequestModel = require('../model/ToConsultRequest')
+const ToUserRequest = require('../model/ToUserRequest')
 const xlsx = require('xlsx')
 const multer = require('multer')
+const fs = require('fs');
+const path = require('path');
+var mime = require('mime');
 
-var fs = require('fs');
+responseFile = (fileName, res) => {
+  const filePath = `storage/${fileName}` // or any file format
+
+  // Check if file specified by the filePath exists 
+  fs.exists(filePath, function (exists) {
+    if (exists) {
+      // Content-type is very interesting part that guarantee that
+      // Web browser will handle response in an appropriate manner.
+      res.writeHead(200, {
+        "Content-Type": "application/octet-stream",
+        "Content-Disposition": "attachment; filename=" + fileName
+      });
+      fs.createReadStream(filePath).pipe(res);
+    } else {
+      res.writeHead(400, { "Content-Type": "text/plain" });
+      res.end("ERROR File does not exist");
+    }
+  });
+}
 
 
 
-// const tostoretemp = require('../storage')
-//storage
+//user file upload
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'usersroutes')
@@ -28,9 +51,202 @@ const storage = multer.diskStorage({
 })
 const upload = multer({ storage: storage }).single('file')
 
+//consultant file upload
+const consultstorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'storage')
+    console.log(file)
+  },
+  filename: function (req, file, cb) {
+    // cb(null, Date.now() + '-' + file.originalname)
+    cb(null, file.originalname)
+  }
+})
+const consultupload = multer({ storage: consultstorage }).single('file')
+
+//consult file upload request
+app.post('/consultfileupload', async (req, res) => {
+  consultupload(req, res, function (err) {
+    if (err instanceof multer.MulterError) {
+      return res.status(500).json(err)
+    } else if (err) {
+      return res.status(500).json(err)
+    }
+    // const FileName = req.file.originalname
+    try {
+
+    } catch (err) {
+      res.send(err);
+    }
+    //----------------------------
+    //----------------------------
+
+  })
+})
+
+//rename report name and create user responds
+app.post('/consulttouserreports', async (req, res) => {
+  const requestData = {
+    originalfilename: req.body.originalfilename,
+    consultant: req.body.consultant,
+    date: req.body.date,
+    description: req.body.description,
+    originalrow: req.body.originalrow,
+    topic: req.body.topic,
+    urgency: req.body.urgency,
+    user: req.body.user,
+    user_email: req.body.user_email,
+    _id: req.body._id
+  }
+
+  const originalfile = requestData.originalfilename
+  const newfile = `${requestData.user}_${requestData.user_email}_${requestData._id}_${requestData.originalfilename}`
+
+  const reportTosend = {
+    topic: requestData.topic,
+    user: requestData.user,
+    email: requestData.user_email,
+    consultant: requestData.consultant,
+    filetoDownload: newfile
+  }
+  const toUserRequest = new ToUserRequest(reportTosend)
+  try {
+    // console.log(requestData.originalfilename)
+    fs.rename(`storage/${originalfile}`, `storage/${newfile}`, function (err) {
+      if (err) {
+        throw err
+      } else {
+        //--------------------------------------
+        try {
+          toUserRequest.save((err) => {
+            if (err) {
+              res.send(err)
+            } else {
+              res.send(toUserRequest)
+            }
+          })
+        } catch (err) {
+          res.status(500).send(err);
+        }
+        //--------------------------------------
+        console.log('File Renamed!');
+      };
+    });
+  } catch (err) {
+    res.send(err);
+  }
+
+})
+
+app.post('/findconsultcompletedrequests', async (req, res) => {
+  const criteria = req.body.consultantID
+  try {
+    const user = await ToUserRequest.find({})
+      .where('consultant').equals(criteria)
+      .exec((err, data) => {
+        if (err) {
+          res.send(JSON.stringify({ status: false, message: "No data found" }));
+        } else {
+          res.send(data);
+        }
+      })
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
+app.post('/findrequestsdone', async (req, res) => {
+  try {
+    const managerrequestsdone = await ToUserRequest.find({})
+    res.status(200).send(managerrequestsdone);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+app.post('/finduserrequestsdone', async (req, res) => {
+  const criteria = req.body.email
+  try {
+    const user = await ToUserRequest.find({})
+      .where('email').equals(criteria)
+      .exec((err, data) => {
+        if (err) {
+          res.send(JSON.stringify({ status: false, message: "No data found" }));
+        } else {
+          res.send(data);
+        }
+      })
+
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
+
+//user report to download
+app.post('/userreporttodownload', async (req, res) => {
+  const requestedfile = {
+    file: req.body.file
+  }
+  fs.readdir("storage", (err, files) => {
+    if (err) {
+      console.log("un able to scan files")
+    } else {
+      files.forEach(file => {
+        console.log({
+          name: file,
+          url: "storage/" + file
+        })
+      })
+    }
+  })
+  // console.log(__basedir)
+  // const requestfilename = `storage/${requestedfile.file}`
+  // const requestfilename = `storage/armin 2017 (3).JPG`
+  // res.download(requestfilename)
+  // console.log(requestfilename)
+  // res.sendFile(`${requestfilename}`, { root: 'storage' });
+  // res.sendFile(`armin 2017 (3).jpg`, { root: 'storage' });
+
+  // res.sendFile(`storage/${requestfilename}`, err=>console.log(err));
+  // fs.access(requestfilename,fs.constants.F_OK,err=>{
+  //   if(err){
+  //     console.log("file does not exist")
+  //   }else{
+  //     console.log("file exists")
+  //     fs.readFile(requestfilename,(err,data)=>{
+  //       res.attachment(requestfilename)
+  //       res.writeHead(200,{})
+  //       res.end(requestfilename)
+  //       // res.download(data)
+
+  //     })
+  //   }
+  // })
+
+
+  // var file = 'storage' + `/${requestfilename}`;
+  // var filename = path.basename(file);
+  // var mimetype = mime.lookup(file);
+  // res.setHeader('Content-disposition', 'attachment; filename=' + filename);
+  // res.setHeader('Content-type', mimetype);
+  // var filestream = fs.createReadStream(file);
+  // filestream.pipe(res);
+
+  // res.setHeader('Content-disposition', 'attachment; filename=' + requestfilename);
+  // filestream = fs.createReadStream(requestfilename);
+  // filestream.pipe(res);
+  //   res.status(200).send().end();
+  //   // res.end();
+  //   // res.send(result);
+
+  //---------------------------------
+})
+
+
+
 
 //user requests
-//send a request
+//send a request from user to manager
 app.post('/userrequest', async (req, res) => {
   const request = {
     reporttype: req.body.reporttype,
@@ -41,19 +257,21 @@ app.post('/userrequest', async (req, res) => {
     user_name: req.body.user_name
   }
   const userrequest = new userRequestModel(request)
+  const toManagerRequest = new toManagerRequestModel(request)
   try {
     await userrequest.save((err) => {
       if (err) {
         res.send(err)
       } else {
+        toManagerRequest.save()
         res.send(userrequest);
       }
-    });
+    })
   } catch (err) {
     res.status(500).send(err);
   }
 });
-//all requests
+//view all requests
 app.post('/userrequests', async (req, res) => {
   const emailInfo = {
     email: req.body.email,
@@ -74,17 +292,147 @@ app.post('/userrequests', async (req, res) => {
   }
 });
 
+// view all manager requests
 app.post('/managerrequests', async (req, res) => {
   try {
-    const managerrequests = await userRequestModel.find({})
+    const managerrequests = await toManagerRequestModel.find({})
     res.status(200).send(managerrequests);
   } catch (err) {
     res.status(500).send(err);
   }
 });
 
+//delete manager request
+app.post('/deletetomanagerrequest', async (req, res) => {
+  const request = {
+    consultant: req.body.consultant,
+    user: req.body.user,
+    topic: req.body.topic,
+    urgency: req.body.urgency,
+    description: req.body.description,
+    user_email: req.body.user_email,
+    originalrow: req.body.originalrow,
+  }
+  try {
+    const managerrequesttodelete = await toManagerRequestModel.findOneAndDelete({
+      topic: request.topic,
+      description: request.description,
+      email: request.user_email,
+      user_name: request.user,
+    })
+    if (!managerrequesttodelete) {
+      res.status(404).send(JSON.stringify({ status: false, message: "No Cards found" }))
+    } else {
+      res.status(200).send(JSON.stringify({ status: true, message: "Record Deleted Successfully" }))
+    }
+  } catch (err) {
+    res.status(500).send(err)
+  }
+})
+
+app.post('/deletetoconsultrequest', async (req, res) => {
+  const requesttodelete = {
+    consultant: req.body.consultant,
+    user: req.body.user,
+    topic: req.body.topic,
+    urgency: req.body.urgency,
+    description: req.body.description,
+    user_email: req.body.user_email,
+  }
+  try {
+    console.log(requesttodelete)
+    const consultantrequesttodelete = await ToConsultRequestModel.findOneAndDelete({
+      consultant: requesttodelete.consultant,
+      user: requesttodelete.user,
+      topic: requesttodelete.topic,
+      description: requesttodelete.description,
+      user_email: requesttodelete.user_email,
+    })
+    if (!consultantrequesttodelete) {
+      res.status(404).send(JSON.stringify({ status: false, message: "No Cards found" }))
+    } else {
+      res.status(200).send(JSON.stringify({ status: true, message: "Record Deleted Successfully" }))
+    }
+  } catch (err) {
+    res.status(500).send(err)
+  }
+})
+
+// create a request from manager to consultant and delete manager request
+app.post('/toconsultantrequest', async (req, res) => {
+  //receive request
+  const request = {
+    consultant: req.body.consultant,
+    user: req.body.user,
+    topic: req.body.topic,
+    urgency: req.body.urgency,
+    description: req.body.description,
+    user_email: req.body.user_email,
+    originalrow: req.body.originalrow,
+  }
+  //do operations create consultant request first and then delete manager request
+  const toconsultatntrequest = new ToConsultRequestModel(request)
+  try {
+    toconsultatntrequest.save((err) => {
+      if (err) {
+        res.send(err)
+      } else {
+        // toManagerRequest.save()
+        res.send(toconsultatntrequest);
+      }
+    })
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
 
 
+app.post('/findconsultantrequests', async (req, res) => {
+  const criteria = req.body.consultantID
+  try {
+    const user = await ToConsultRequestModel.find({})
+      .where('consultant').equals(criteria)
+      .exec((err, data) => {
+        if (err) {
+          res.send(JSON.stringify({ status: false, message: "No data found" }));
+        } else {
+          res.send(data);
+        }
+      })
+
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
+//find all consultant requests
+app.post('/findAllconsultantrequests', async (req, res) => {
+  try {
+    const consultantRequests = await ToConsultRequestModel.find({})
+    res.status(200).send(consultantRequests);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
+//view all consultant requests
+app.post('/findconsult', async (req, res) => {
+  const criteria = req.body.email
+  try {
+    const user = await userModel.find({})
+      .where('email').equals(criteria)
+      .exec((err, data) => {
+        if (err) {
+          res.send(JSON.stringify({ status: false, message: "No data found" }));
+        } else {
+          res.send(data);
+        }
+      })
+
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
 
 //get all users
 app.get('/users', async (req, res) => {
@@ -114,7 +462,6 @@ app.post('/consultants', async (req, res) => {
     res.status(500).send(err);
   }
 });
-
 
 //get one user
 app.post('/users/getuser', async (req, res) => {
@@ -173,7 +520,8 @@ app.post('/card/delete', async (req, res) => {
   } catch (err) {
     res.status(500).send(err)
   }
-})
+}
+)
 //update card status 
 app.post('/card/update', async (req, res) => {
   const cardToUpdate = {
@@ -254,7 +602,6 @@ app.post('/users/update', async (req, res) => {
 });
 
 //get user file upload
-
 //file upload
 app.post('/userfileupload', async (req, res) => {
   upload(req, res, function (err) {
@@ -494,7 +841,62 @@ app.post('/card', async (req, res) => {
 });
 
 
-
-
-
 module.exports = app
+
+
+
+/*
+function downloadCtrl(req, res, next) {
+  const id = req.params.id;
+  const name = req.query && req.query.name;
+  const gcsUrl = `https://storage.googleapis.com/${GC_STORAGE}/`;
+
+  request
+    .get(gcsUrl + id)
+    .on('response', (resp) => {
+      // delete resp.headers['x-goog-expiration'];
+      // delete resp.headers['x-goog-generation'];
+      // delete resp.headers['x-goog-hash'];
+      // delete resp.headers['x-goog-storage-class'];
+      // delete resp.headers['x-goog-metageneration'];
+      // delete resp.headers['x-goog-stored-content-encoding'];
+      // delete resp.headers['x-goog-stored-content-length'];
+      // delete resp.headers['x-guploader-uploadid'];
+      // delete resp.headers['server'];
+      // delete resp.headers['alt-svc'];
+      // delete resp.headers['accept-ranges'];
+      if(resp.statusCode === 500) {
+        return errors.internalServer(res);
+      }
+      else if(resp.statusCode !== 200) {
+        return errors.notFound(res);
+      }
+      else {
+        let ext = '';
+        resp.once('data', (chunk) => {
+          ext = fileType(chunk).ext;
+        })
+        res.set({
+          'cache-control': resp.headers['cache-control'],
+          'content-type': resp.headers['content-type'],
+          'content-length': resp.headers['content-length'],
+          'content-disposition': `attachment; filename=${parseName(ext, name)}`,
+          'etag': resp.headers['etag']
+        });
+        resp.pipe(res);
+      }
+    })
+    .on('error', (err) => {
+      log.warn(err, 'Error into getting url. Route: /dl/:id');
+      return errors.internalServer(res);
+    })
+}
+
+
+https://www.codota.com/code/javascript/functions/request/Response/headers
+
+
+//set cookie
+https://www.geeksforgeeks.org/node-js-response-writehead-method/
+
+*/

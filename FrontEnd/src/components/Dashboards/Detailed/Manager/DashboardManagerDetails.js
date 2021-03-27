@@ -5,14 +5,23 @@ import moment from 'moment'
 export default function DashboardManagerDetails() {
 
     const [usersRequests, setusersRequests] = useState([])
+    const [pendingRequest, setpendingRequest] = useState([])
     const [consultantList, setconsultantList] = useState([])
+    const [toUserRequests, settoUserRequests] = useState([])
     const [pageRefresh, setpageRefresh] = useState(0)
     const [seconds, setSeconds] = useState(0);
-    const [reportType, setreportType] = useState("")
+    const [ForwardTo, setForwardTo] = useState("")
 
     useEffect(() => {
         const interval = setInterval(() => {
             //-----------------------------------------
+            axios.post("http://localhost:8080/consultants", "")
+                .then(res => {
+                    const consult = res.data
+                    setconsultantList([...consult])
+                    // console.log(consultantList)
+                })
+            //get requests
             axios.post("http://localhost:8080/managerrequests", "")
                 .then(res => {
                     const resUsersRequests = res.data
@@ -20,24 +29,36 @@ export default function DashboardManagerDetails() {
                     // console.log(usersRequests)
                 })
 
-            axios.post("http://localhost:8080/consultants", "")
+            axios.post("http://localhost:8080/findAllconsultantrequests", "")
                 .then(res => {
-                    const consult = res.data
-                    setconsultantList([...consult])
-                    // console.log(consultantList)
+                    const resconsultantsRequests = res.data
+                    setpendingRequest([...resconsultantsRequests])
+                    // console.log(resconsultantsRequests)
                 })
+
+            // axios.post('http://localhost:8080/findconsultcompletedrequests', "")
+            axios.post('http://localhost:8080/findrequestsdone', "")
+                .then(res => {
+                    const data = res.data
+                    settoUserRequests([...data])
+                    // console.log(toUserRequests)
+                })
+
             //-----------------------------------------
             setSeconds(seconds => seconds + 1);
-        }, 5000);
+        }, 1000);
         return () => clearInterval(interval);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [pageRefresh,reportType])
+    }, [pageRefresh])
+
+
+    // pageRefresh, ForwardTo
 
     // function displayConsults() {
     //     return (
     //         <select
-    //             // value={reportType}
-    //             onChange={e => setreportType(e.target.value)}
+    //             // value={ForwardTo}
+    //             onChange={e => setForwardTo(e.target.value)}
     //         >
     //             <option value="">Select Consultatnt</option>
     //             {
@@ -57,83 +78,156 @@ export default function DashboardManagerDetails() {
             return (
                 //-----------------------------------------
                 <table id="customers">
-                    <tr>
-                        <th>User</th>
-                        <th>Topic</th>
-                        <th>Forward To</th>
-                        <th>Date</th>
-                        <th>Action</th>
-                    </tr>
-                    {
-                        usersRequests.map(
-                            item =>
-                                <tr key={item._id}>
-                                    <td>{item.user_name}</td>
-                                    <td>{item.topic}</td>
-                                    {/* <td>{displayConsults()}</td> */}
-                                    <td>
-                                        <select
-                                            // value={reportType}
-                                            className='DropList'
-                                            onChange={e =>
-                                                setreportType({ row: item._id, option: e.target.value })}
-                                        >
-                                            <option value="">Select Consultatnt</option>
-                                            {
-                                                consultantList.map(
-                                                    consult => <option key={consult._id} value={consult._id}>{`${consult.first_name} ${consult.last_name}`}</option>
-                                                )
-                                            }
-                                        </select>
-                                    </td>
-                                    <td>{moment(item.created).format("LLL")}</td>
-                                    <button onClick={() => postfunction(item)} className="btn btn-primary">Post</button>
-                                </tr>
-                        )
-                    }
-                </table>
+                    <tbody>
+                        <tr>
+                            <th>User</th>
+                            <th>Topic</th>
+                            <th>Urgency</th>
+                            <th>Forward To</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                        {
+                            usersRequests.map(
+                                item =>
+                                    <tr key={item._id}>
+                                        <td>{item.user_name}</td>
+                                        <td>{item.topic}</td>
+                                        <td>{item.urgency}</td>
+                                        <td>
+                                            <select
+                                                className='DropList'
+                                                onChange={
+                                                    (e) => {
+                                                        setForwardTo({ row: item._id, option: e.target.value })
+                                                        return (ForwardTo)
+                                                    }
+                                                }
+                                            >
+                                                <option value="">Select Consultatnt</option>
+                                                {
+                                                    consultantList.map(
+                                                        consult => <option key={consult._id} value={consult._id}>{`${consult.first_name} ${consult.last_name}`}</option>
+                                                    )
+                                                }
+                                            </select>
+                                        </td>
+                                        <td>{moment(item.created).format("LLL")}</td>
+                                        <td><button onClick={() => postfunction(item)} className="btn btn-primary">Post</button></td>
+                                    </tr>
+                            )
+                        }
+                    </tbody>
+                </table >
                 //-----------------------------------------
             )
         }
     }
-    function selectOnchange(state) {
-        setreportType([{
-            row: state.row,
-            option: state.option
-        }])
-
-        console.log(reportType)
-
+    function showConsultant(value) {
+        const result = consultantList.find(person => person._id === value)
+        return (`${result.first_name} ${result.last_name}`)
     }
-
-    // function resetOptions(){
-    //     document.getElementById("DropList").nodeValue= "0";
-    // }
+    function displayPendingrRequests() {
+        if (pendingRequest.length === 0) {
+            return (
+                <h1>NO requests pending</h1>
+            )
+        } else {
+            return (
+                <table id="customers">
+                    <tbody>
+                        <tr>
+                            <th>User</th>
+                            <th>Topic</th>
+                            <th>Urgency</th>
+                            <th>Forwarded To</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                        </tr>
+                        {
+                            pendingRequest.map(
+                                data =>
+                                    <tr key={data._id}>
+                                        <td>{data.user}</td>
+                                        <td>{data.topic}</td>
+                                        <td>{data.urgency}</td>
+                                        {
+                                            <td>{showConsultant(data.consultant)}</td>
+                                        }
+                                        <td>{moment(data.date).format("LLL")}</td>
+                                        <td>pending</td>
+                                    </tr>
+                            )
+                        }
+                    </tbody>
+                </table >
+            )
+        }
+    }
 
     function postfunction(item) {
         const row = {
-            row_id: item._id,
+            consultant: ForwardTo.option,
             user: item.user_name,
             topic: item.topic,
-            forwardto: reportType,
-            date: moment(item.created).format("LLL"),
+            urgency: item.urgency,
+            description: item.description,
+            user_email: item.email,
+            originalrow: ForwardTo.row,
         }
-        if (row.forwardto.row === "" || row.forwardto.option === "") {
-            window.alert("Please select an option from forward to")
+
+        if (row.originalrow === "" || row.consultant === "" || row.consultant === undefined || row.originalrow === undefined) {
+            window.alert("Please select a consultant")
+            setForwardTo("")
         } else {
-            if (row.forwardto.row !== row.row_id) {
-                window.alert("Please select an option from forward to")
-                setreportType("")
-            } else {
-                console.log(row)
-                setreportType("")
-            }
+            // console.log(row)
+            //send request to consultant
+            axios.post('http://localhost:8080/toconsultantrequest', row)
+                .then(res => {
+                    console.log(res)
+                })
+            //delete from to manager requests
+            axios.post('http://localhost:8080/deletetomanagerrequest', row)
+                .then(res => {
+                    console.log(res)
+                })
+            setForwardTo("")
         }
     }
-
+    function viewCompletedRequests() {
+        if (toUserRequests.length === 0) {
+            return (
+                <h1>No Requests Completed</h1>
+            )
+        } else {
+            return (
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>User</th>
+                            <th>Topic</th>
+                            <th>Completed By</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                        </tr>
+                        {
+                            toUserRequests.map(data=>
+                                <tr key={data._id}>
+                                    <td>{data.user}</td>
+                                    <td>{data.topic}</td>
+                                    <td>{showConsultant(data.consultant)}</td>
+                                    <td>{moment(data.created).format("LLL")}</td>
+                                    <td>Complete</td>
+                                </tr>
+                                )
+                        }
+                    </tbody>
+                </table>
+            )
+        }
+    }
     return (
-        <div lassName="mprofile">
-            <h1>Hello from Manager DashBoard</h1>
+        <div className="mprofile">
             {/*Received Here*/}
             <div className="myDiv">
                 <br />
@@ -150,22 +244,7 @@ export default function DashboardManagerDetails() {
                 <br />
                 <br />
                 <h1>Requests Pending</h1>
-                <table id="customers">
-                    <tr>
-                        <th>Number</th>
-                        <th>User</th>
-                        <th>Status</th>
-                        <th>Topic</th>
-                        <th>Date</th>
-                    </tr>
-                    <tr>
-                        <td>02</td>
-                        <td>John Doe</td>
-                        <td>Pending</td>
-                        <td>Some Topic</td>
-                        <td>Date</td>
-                    </tr>
-                </table>
+                {displayPendingrRequests()}
                 <br />
                 <br />
             </div>
@@ -177,39 +256,12 @@ export default function DashboardManagerDetails() {
                 <br />
                 <br />
                 <h1>Responds</h1>
-                <table id="customers">
-                    <tr>
-                        <th>Number</th>
-                        <th>User</th>
-                        <th>Status</th>
-                        <th>Topic</th>
-                        <th>Date</th>
-                    </tr>
-                    <tr>
-                        <td>03</td>
-                        <td>John Doe</td>
-                        <td>Complete</td>
-                        <td>Some Topic</td>
-                        <td>Date</td>
-                    </tr>
-                </table>
+                {viewCompletedRequests()}
                 <br />
                 <br />
             </div>
-
+            <br />
+            <br />
         </div>
     )
 }
-
-
-/*
-https://github.com/mui-org/material-ui/issues/4535
-
-https://blog.logrocket.com/building-styling-tables-react-table-v7/
-
-https://www.pluralsight.com/guides/how-to-get-selected-value-from-a-mapped-select-input-in-react
-
-https://upmostly.com/tutorials/setinterval-in-react-components-using-hooks
-
-https://upmostly.com/tutorials/settimeout-in-react-components-using-hooks
-*/

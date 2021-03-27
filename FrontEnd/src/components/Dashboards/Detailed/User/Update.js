@@ -59,8 +59,6 @@ export default function Update() {
                             // console.log(res.data)
                             console.log(res.data)
                         })
-
-
                     //--------------------------------------------------
                     seterror("")
                 } else {
@@ -72,7 +70,6 @@ export default function Update() {
     }
     return (
         <div className="profile">
-            <h1>Hello from Update</h1>
             <div className="myDiv">
                 <br />
                 <br />
@@ -95,7 +92,6 @@ export default function Update() {
                     </form>
                 </div>
                 {/*----------------------------------------*/}
-
                 <br />
                 <br />
             </div>
@@ -104,8 +100,6 @@ export default function Update() {
                 <br />
                 <br />
                 <h1>2- Step Two: Fill up the template and upload</h1>
-
-
                 <div className="col-sm-6 offset-sm-3">
                     <form onSubmit={uploadfile}>
                         <select
@@ -121,19 +115,13 @@ export default function Update() {
                         <input type="submit" className="btn btn-primary" />
                     </form>
                 </div>
-
                 <br />
                 <br />
             </div>
-            <br />
             <br />
             <div>
                 {error}
             </div>
-            <br />
-            <br />
-            <br />
-            <br />
             <br />
             <br />
         </div>

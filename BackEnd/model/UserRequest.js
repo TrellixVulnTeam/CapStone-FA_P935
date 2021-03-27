@@ -13,7 +13,6 @@ const UserRequestSchema = new mongoose.Schema(
         urgency: {
             type: String,
             required: false,
-
         },
         description: {
             type: String,
