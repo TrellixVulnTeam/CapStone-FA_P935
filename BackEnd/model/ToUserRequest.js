@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-
 const ToUserRequestSchema = new mongoose.Schema(
     {
         topic: {
@@ -32,10 +31,7 @@ const ToUserRequestSchema = new mongoose.Schema(
         created: {
             type: Date,
             default: Date.now
-            // type: String,
-            // require: false,
         },
     }
 )
-
 module.exports = mongoose.model(`ToUserRequest`, ToUserRequestSchema)

@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react'
 import "./ManagerStyles.css"
 import axios from "axios"
 import moment from 'moment'
-export default function DashboardManagerDetails() {
+import SecureLS from "secure-ls"
 
+
+export default function DashboardManagerDetails() {
+    const securestorage = new SecureLS();
     const [usersRequests, setusersRequests] = useState([])
     const [pendingRequest, setpendingRequest] = useState([])
     const [consultantList, setconsultantList] = useState([])
@@ -51,24 +54,6 @@ export default function DashboardManagerDetails() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pageRefresh])
 
-
-    // pageRefresh, ForwardTo
-
-    // function displayConsults() {
-    //     return (
-    //         <select
-    //             // value={ForwardTo}
-    //             onChange={e => setForwardTo(e.target.value)}
-    //         >
-    //             <option value="">Select Consultatnt</option>
-    //             {
-    //                 consultantList.map(
-    //                     item => <option key={item._id} value={item._id}>{`${item.first_name} ${item.last_name}`}</option>
-    //                 )
-    //             }
-    //         </select>
-    //     )
-    // }
     function displayUserRequests() {
         if (usersRequests.length === 0) {
             return (
@@ -124,8 +109,12 @@ export default function DashboardManagerDetails() {
         }
     }
     function showConsultant(value) {
-        const result = consultantList.find(person => person._id === value)
-        return (`${result.first_name} ${result.last_name}`)
+        if (consultantList.length === 0) {
+            return null
+        } else {
+            const result = consultantList.find(person => person._id === value)
+            return (`${result.first_name} ${result.last_name}`)
+        }
     }
     function displayPendingrRequests() {
         if (pendingRequest.length === 0) {
@@ -164,7 +153,6 @@ export default function DashboardManagerDetails() {
             )
         }
     }
-
     function postfunction(item) {
         const row = {
             consultant: ForwardTo.option,
@@ -175,21 +163,19 @@ export default function DashboardManagerDetails() {
             user_email: item.email,
             originalrow: ForwardTo.row,
         }
-
         if (row.originalrow === "" || row.consultant === "" || row.consultant === undefined || row.originalrow === undefined) {
             window.alert("Please select a consultant")
             setForwardTo("")
         } else {
-            // console.log(row)
             //send request to consultant
             axios.post('http://localhost:8080/toconsultantrequest', row)
                 .then(res => {
-                    console.log(res)
+                    // console.log(res)
                 })
             //delete from to manager requests
             axios.post('http://localhost:8080/deletetomanagerrequest', row)
                 .then(res => {
-                    console.log(res)
+                    // console.log(res)
                 })
             setForwardTo("")
         }
@@ -211,7 +197,7 @@ export default function DashboardManagerDetails() {
                             <th>Status</th>
                         </tr>
                         {
-                            toUserRequests.map(data=>
+                            toUserRequests.map(data =>
                                 <tr key={data._id}>
                                     <td>{data.user}</td>
                                     <td>{data.topic}</td>
@@ -219,7 +205,7 @@ export default function DashboardManagerDetails() {
                                     <td>{moment(data.created).format("LLL")}</td>
                                     <td>Complete</td>
                                 </tr>
-                                )
+                            )
                         }
                     </tbody>
                 </table>
@@ -229,7 +215,7 @@ export default function DashboardManagerDetails() {
     return (
         <div className="mprofile">
             {/*Received Here*/}
-            <div className="myDiv">
+            <div className="userprofileDiv">
                 <br />
                 <br />
                 <h1>Requests Received</h1>
@@ -237,10 +223,9 @@ export default function DashboardManagerDetails() {
                 <br />
                 <br />
             </div>
-
             <br />
             {/*Pending  Here*/}
-            <div className="myDiv">
+            <div className="userprofileDiv">
                 <br />
                 <br />
                 <h1>Requests Pending</h1>
@@ -248,11 +233,9 @@ export default function DashboardManagerDetails() {
                 <br />
                 <br />
             </div>
-
-            <br></br>
-
+            <br />
             {/*Responds  Here*/}
-            <div className="myDiv">
+            <div className="userprofileDiv">
                 <br />
                 <br />
                 <h1>Responds</h1>

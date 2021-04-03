@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-
 const UserRequestSchema = new mongoose.Schema(
     {
         reporttype: {
@@ -39,5 +38,4 @@ const UserRequestSchema = new mongoose.Schema(
         },
     }
 )
-
 module.exports = mongoose.model(`UserRequest`, UserRequestSchema)

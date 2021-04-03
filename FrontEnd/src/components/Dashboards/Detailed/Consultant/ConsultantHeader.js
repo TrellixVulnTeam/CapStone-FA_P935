@@ -9,8 +9,7 @@ import Button from 'react-bootstrap/Button'
 //import other pages
 import DashboardConsultantDetails from "./DashboardConsultantDetails"
 import ConsultantProfile from "./ConsultantProfile"
-//import Requests from "./Requests"
-//import Update from "./Update"
+
 import { useHistory } from "react-router-dom"
 
 export default function ConsultantHeader() {
@@ -60,16 +59,6 @@ export default function ConsultantHeader() {
                 <Tab eventKey="profile" title="Profile">
                     <ConsultantProfile />
                 </Tab>
-                {
-                    /*
-                    <Tab eventKey="requests" title="Requests" >
-                        <Requests/>
-                    </Tab>
-                    <Tab eventKey="update" title="Update" >
-                        <Update/>
-                    </Tab>
-                    */
-                }
             </Tabs>
         </div>
     );

@@ -1,10 +1,13 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react'
 import "./ManagerStyles.css"
 import Modal from "react-modal"
 import { useHistory } from "react-router-dom"
 import axios from "axios"
+import SecureLS from "secure-ls"
 
 export default function ManagerProfile() {
+    const securestorage = new SecureLS();
     const history = useHistory()
     //user information
     const [serverFname, setserverFname] = useState("")
@@ -15,7 +18,8 @@ export default function ManagerProfile() {
     //catch userdata from the server
     useEffect(() => {
         const user = {
-            "email": localStorage.getItem("user"),
+            // "email": localStorage.getItem("user"),
+            "email": securestorage.get("user"),
         }
         axios.post("http://localhost:8080/users/getuser", user)
             .then(res => {
@@ -25,7 +29,6 @@ export default function ManagerProfile() {
                 setserverPhone(userData.phone)
                 setserverEmail(userData.email)
                 setserverPassword(userData.password)
-
             })
     }, [serverFname, serverLname, serverPhone, serverEmail, serverPassword])
 
@@ -89,17 +92,55 @@ export default function ManagerProfile() {
     function openManagerProfile() {
         setmanagerModal(true)
     }
+
+    function renderPassword(word) {
+        let newword = ""
+        for (let i = 0; i <= word.length; i++) {
+            if (i <= 2) {
+                newword = newword + `${word[i]}`
+            } else {
+                newword = newword + '*'
+            }
+        }
+        return newword
+    }
+
+
+
     return (
         <div>
             <div className="mprofile">
-                <div className="myDiv">
+                <div className="userprofileDiv">
                     <br />
                     <br />
-                    <h1>{`First Name: ${serverFname}`}</h1>
-                    <h1>{`Last Name: ${serverLname}`}</h1>
-                    <h1>{`Phone: ${serverPhone}`}</h1>
-                    <h1>{`Email: ${serverEmail}`}</h1>
-                    <h1>{`Password: ${serverPassword}`}</h1>
+                    <table style={{ width: "40%", margin: "auto", fontSize: "25px" }}>
+                        <tbody>
+                            <tr>
+                                <th>First Name</th>
+                                <td>{serverFname}</td>
+                            </tr>
+                            <tr>
+                                <th>Last Name</th>
+                                <td>{serverLname}</td>
+                            </tr>
+                            <tr>
+                                <th>Phone</th>
+                                <td>{serverPhone}</td>
+                            </tr>
+                            <tr>
+                                <th>Email</th>
+                                <td>{serverEmail}</td>
+                            </tr>
+                            <tr>
+                                <th>Password</th>
+                                <td>{
+                                    renderPassword(serverPassword)
+                                }</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br />
+                    <br />
                     <button className="btn btn-primary" onClick={openManagerProfile}>Edit Profile</button>
                     <br />
                     <br />
@@ -134,7 +175,7 @@ export default function ManagerProfile() {
                         <input type="text" className="form-control" placeholder={serverLname} onChange={(e) => setLname(e.target.value)} value={lname} /><br />
                         <input type="text" className="form-control" placeholder={serverPhone} onChange={(e) => setPhone(e.target.value)} value={phone} /><br />
                         <input type="text" className="form-control" placeholder={serverEmail} onChange={(e) => setEmail(e.target.value)} value={email} /><br />
-                        <input type="password" className="form-control" placeholder={serverPassword} onChange={(e) => setPassword(e.target.value)} value={password} /><br />
+                        <input type="password" className="form-control" placeholder={renderPassword(serverPassword)} onChange={(e) => setPassword(e.target.value)} value={password} /><br />
                         <input type="password" className="form-control" placeholder="Re-Password" onChange={(e) => setRepassword(e.target.value)} value={repassword} /><br />
                         <button onClick={closeManagerProfile} className="btn btn-primary">Update</button>
                     </div>

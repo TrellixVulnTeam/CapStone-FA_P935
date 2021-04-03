@@ -8,6 +8,7 @@ const balancesheetModel = require('../model/UserBalanceSheet')
 const toManagerRequestModel = require('../model/ToManagerRequest')
 const ToConsultRequestModel = require('../model/ToConsultRequest')
 const ToUserRequest = require('../model/ToUserRequest')
+const controller = require('../file.controller')
 const xlsx = require('xlsx')
 const multer = require('multer')
 const fs = require('fs');
@@ -40,12 +41,8 @@ responseFile = (fileName, res) => {
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'usersroutes')
-    // const filetouse = xlsx.readFile(file.originalname)
-    // const workSheet = filetouse.Sheets['Data']
-    // console.log(workSheet)
   },
   filename: function (req, file, cb) {
-    // cb(null, Date.now() + '-' + file.originalname)
     cb(null, file.originalname)
   }
 })
@@ -55,10 +52,8 @@ const upload = multer({ storage: storage }).single('file')
 const consultstorage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'storage')
-    console.log(file)
   },
   filename: function (req, file, cb) {
-    // cb(null, Date.now() + '-' + file.originalname)
     cb(null, file.originalname)
   }
 })
@@ -72,16 +67,16 @@ app.post('/consultfileupload', async (req, res) => {
     } else if (err) {
       return res.status(500).json(err)
     }
-    // const FileName = req.file.originalname
     try {
 
     } catch (err) {
       res.send(err);
     }
-    //----------------------------
-    //----------------------------
-
   })
+})
+
+app.post('/donothing', async (req, res) => {
+  res.send("File Upload Successfuly")
 })
 
 //rename report name and create user responds
@@ -98,9 +93,11 @@ app.post('/consulttouserreports', async (req, res) => {
     user_email: req.body.user_email,
     _id: req.body._id
   }
-
+  console.log(requestData)
   const originalfile = requestData.originalfilename
   const newfile = `${requestData.user}_${requestData.user_email}_${requestData._id}_${requestData.originalfilename}`
+  console.log('Original file Name ' + originalfile)
+  console.log('New file Name ' + newfile)
 
   const reportTosend = {
     topic: requestData.topic,
@@ -109,9 +106,20 @@ app.post('/consulttouserreports', async (req, res) => {
     consultant: requestData.consultant,
     filetoDownload: newfile
   }
+
   const toUserRequest = new ToUserRequest(reportTosend)
+  console.log("data to send to user: " + toUserRequest)
   try {
-    // console.log(requestData.originalfilename)
+    console.log(requestData.originalfilename)
+    fs.access(`storage/${originalfile}`, fs.F_OK, (err) => {
+      if (err) {
+        console.log('file does not exists')
+      } else {
+        console.log('file exists')
+      }
+
+    })
+
     fs.rename(`storage/${originalfile}`, `storage/${newfile}`, function (err) {
       if (err) {
         throw err
@@ -163,6 +171,7 @@ app.post('/findrequestsdone', async (req, res) => {
     res.status(500).send(err);
   }
 });
+
 app.post('/finduserrequestsdone', async (req, res) => {
   const criteria = req.body.email
   try {
@@ -175,73 +184,39 @@ app.post('/finduserrequestsdone', async (req, res) => {
           res.send(data);
         }
       })
-
   } catch (err) {
     res.status(500).send(err);
   }
 });
 
-
-//user report to download
-app.post('/userreporttodownload', async (req, res) => {
-  const requestedfile = {
-    file: req.body.file
-  }
-  fs.readdir("storage", (err, files) => {
+app.get('/getStoredfiles', async (req, res) => {
+  fs.readdir('storage', (err, files) => {
     if (err) {
-      console.log("un able to scan files")
+      res.status(500).send({
+        message: "unable to scan files"
+      })
     } else {
+      let filesInfo = []
+      let reqPath = path.join(__dirname, '../')
       files.forEach(file => {
-        console.log({
+        filesInfo.push({
           name: file,
-          url: "storage/" + file
+          path: reqPath + 'storage/' + file
         })
       })
+      res.status(200).send(filesInfo)
     }
   })
-  // console.log(__basedir)
-  // const requestfilename = `storage/${requestedfile.file}`
-  // const requestfilename = `storage/armin 2017 (3).JPG`
-  // res.download(requestfilename)
-  // console.log(requestfilename)
-  // res.sendFile(`${requestfilename}`, { root: 'storage' });
-  // res.sendFile(`armin 2017 (3).jpg`, { root: 'storage' });
-
-  // res.sendFile(`storage/${requestfilename}`, err=>console.log(err));
-  // fs.access(requestfilename,fs.constants.F_OK,err=>{
-  //   if(err){
-  //     console.log("file does not exist")
-  //   }else{
-  //     console.log("file exists")
-  //     fs.readFile(requestfilename,(err,data)=>{
-  //       res.attachment(requestfilename)
-  //       res.writeHead(200,{})
-  //       res.end(requestfilename)
-  //       // res.download(data)
-
-  //     })
-  //   }
-  // })
-
-
-  // var file = 'storage' + `/${requestfilename}`;
-  // var filename = path.basename(file);
-  // var mimetype = mime.lookup(file);
-  // res.setHeader('Content-disposition', 'attachment; filename=' + filename);
-  // res.setHeader('Content-type', mimetype);
-  // var filestream = fs.createReadStream(file);
-  // filestream.pipe(res);
-
-  // res.setHeader('Content-disposition', 'attachment; filename=' + requestfilename);
-  // filestream = fs.createReadStream(requestfilename);
-  // filestream.pipe(res);
-  //   res.status(200).send().end();
-  //   // res.end();
-  //   // res.send(result);
-
-  //---------------------------------
 })
 
+app.post('/downloadStoredfiles', async (req, res) => {
+
+  const fileName = req.body.file
+  let reqPath = path.join(__dirname, '../')
+  const directorypath = reqPath + 'storage\\'
+
+  res.status(200).send(directorypath + fileName)
+})
 
 
 
@@ -286,7 +261,6 @@ app.post('/userrequests', async (req, res) => {
           res.send(data);
         }
       })
-    //res.send(user)
   } catch (err) {
     res.status(500).send(err);
   }
@@ -377,7 +351,6 @@ app.post('/toconsultantrequest', async (req, res) => {
       if (err) {
         res.send(err)
       } else {
-        // toManagerRequest.save()
         res.send(toconsultatntrequest);
       }
     })
@@ -456,8 +429,6 @@ app.post('/consultants', async (req, res) => {
           res.send(data);
         }
       })
-    // res.status(200).send(user);
-
   } catch (err) {
     res.status(500).send(err);
   }
@@ -478,7 +449,6 @@ app.post('/users/getuser', async (req, res) => {
           res.send(data);
         }
       })
-    //res.send(user)
   } catch (err) {
     res.status(500).send(err);
   }
@@ -499,7 +469,6 @@ app.post('/cards', async (req, res) => {
           res.send(data);
         }
       })
-    //res.send(user)
   } catch (err) {
     res.status(500).send(err);
   }
@@ -520,8 +489,7 @@ app.post('/card/delete', async (req, res) => {
   } catch (err) {
     res.status(500).send(err)
   }
-}
-)
+})
 //update card status 
 app.post('/card/update', async (req, res) => {
   const cardToUpdate = {
@@ -549,28 +517,13 @@ app.post('/card/update', async (req, res) => {
 
 //login
 app.post('/users/login', async (req, res) => {
-  //const loginData = req.body
-  // const email = req.body.email
-  // const password=req.body.password
   const loginData = {
     email: req.body.email,
     password: req.body.password
   }
-  //const user = await userModel.find({ email: email });
   try {
-    // .find({})
-    // .where('email').equals(email)
-    //const user = userModel.find({ $and: [{ email: loginData.email }, { password: loginData.password }] })
-    // const user=await userModel
-    // .find({})
-    // .where('email').equals(loginData.email)
-    // .where('password').equals(loginData.loginData)
-    // if (user.length != 0) {
-    //   res.send(user)
-    // }
     const user = userModel.find({})
       .where('email').equals(loginData.email)
-      //.where('password').equals(loginData.password)
       .exec((err, data) => {
         if (err) {
           res.send(JSON.stringify({ status: false, message: "No data found" }));
@@ -578,7 +531,6 @@ app.post('/users/login', async (req, res) => {
           res.send(data);
         }
       })
-    //res.send(user)
   } catch (err) {
     res.status(500).send(err);
   }
@@ -610,9 +562,7 @@ app.post('/userfileupload', async (req, res) => {
     } else if (err) {
       return res.status(500).json(err)
     }
-    // console.log(req)
     const FileName = req.file.originalname
-    // add file name options here !!!
     const file = xlsx.readFile(`usersroutes/${FileName}`)
     const workSheet = file.Sheets['Data']
     const data = []
@@ -764,17 +714,6 @@ app.post('/userfileupload', async (req, res) => {
     } catch (err) {
       res.send(err);
     }
-    //----------------------------
-    //   console.log(yearOne)
-    //   if (yearOne.email === "Year") {
-    //     res.status(200).send('Invalid Email')
-    //   } else {
-    //     res.status(200).send('correct token')
-    //   }
-    // })
-
-    //----------------------------
-
   })
 })
 
@@ -842,61 +781,3 @@ app.post('/card', async (req, res) => {
 
 
 module.exports = app
-
-
-
-/*
-function downloadCtrl(req, res, next) {
-  const id = req.params.id;
-  const name = req.query && req.query.name;
-  const gcsUrl = `https://storage.googleapis.com/${GC_STORAGE}/`;
-
-  request
-    .get(gcsUrl + id)
-    .on('response', (resp) => {
-      // delete resp.headers['x-goog-expiration'];
-      // delete resp.headers['x-goog-generation'];
-      // delete resp.headers['x-goog-hash'];
-      // delete resp.headers['x-goog-storage-class'];
-      // delete resp.headers['x-goog-metageneration'];
-      // delete resp.headers['x-goog-stored-content-encoding'];
-      // delete resp.headers['x-goog-stored-content-length'];
-      // delete resp.headers['x-guploader-uploadid'];
-      // delete resp.headers['server'];
-      // delete resp.headers['alt-svc'];
-      // delete resp.headers['accept-ranges'];
-      if(resp.statusCode === 500) {
-        return errors.internalServer(res);
-      }
-      else if(resp.statusCode !== 200) {
-        return errors.notFound(res);
-      }
-      else {
-        let ext = '';
-        resp.once('data', (chunk) => {
-          ext = fileType(chunk).ext;
-        })
-        res.set({
-          'cache-control': resp.headers['cache-control'],
-          'content-type': resp.headers['content-type'],
-          'content-length': resp.headers['content-length'],
-          'content-disposition': `attachment; filename=${parseName(ext, name)}`,
-          'etag': resp.headers['etag']
-        });
-        resp.pipe(res);
-      }
-    })
-    .on('error', (err) => {
-      log.warn(err, 'Error into getting url. Route: /dl/:id');
-      return errors.internalServer(res);
-    })
-}
-
-
-https://www.codota.com/code/javascript/functions/request/Response/headers
-
-
-//set cookie
-https://www.geeksforgeeks.org/node-js-response-writehead-method/
-
-*/

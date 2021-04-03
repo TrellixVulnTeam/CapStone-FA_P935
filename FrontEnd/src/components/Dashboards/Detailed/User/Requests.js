@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react'
 import "../User/UserStyles.css"
 //Modal
@@ -5,10 +6,11 @@ import Modal from "react-modal"
 import { useHistory } from "react-router-dom"
 import axios from "axios"
 import moment from 'moment'
-
+import SecureLS from "secure-ls"
 
 
 export default function Requests() {
+    const securestorage = new SecureLS();
     const history = useHistory()
     const [serverFname, setserverFname] = useState("")
     const [serverLname, setserverLname] = useState("")
@@ -31,7 +33,7 @@ export default function Requests() {
 
     useEffect(() => {
         const user = {
-            "email": localStorage.getItem("user"),
+            "email": securestorage.get("user"),
         }
         axios.post("http://localhost:8080/users/getuser", user)
             .then(res => {
@@ -49,7 +51,7 @@ export default function Requests() {
     useEffect(() => {
         const interval = setInterval(() => {
             const user = {
-                email: localStorage.getItem("user"),
+                email: securestorage.get("user"),
             }
             axios.post("http://localhost:8080/userrequests", user)
                 .then(res => {
@@ -140,61 +142,42 @@ export default function Requests() {
             )
         }
     }
-    /*
-    consultant: "603a72704ac2f68378f66c3b"
-    created: "2021-03-26T11:28:42.668Z"
-    email: "jane@doe.ca"
-    filetoDownload: "Jane Doe_jane@doe.ca_605d30523ef05e8390cbc4b6_Balance_Sheet.xlsx"
-    topic: "2020 cash"
-    user: "Jane Doe"
-    __v: 0
-    _id: "605dc56a48e50bc51c1a2d0e"
-    */
+
+    function saveAs(uri, filename) {
+        // var link = document.createElement('a');
+        // if (typeof link.download === 'string') {
+        // link.href = uri;
+        // link.setAttribute('download', filename);
+        // document.body.appendChild(link);
+        // link.click();
+        // document.body.removeChild(link);
+        // } else {
+        //     window.open(uri);
+        // }
+
+        // const url = uri;
+        const url = uri
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', filename.file);
+        document.body.appendChild(link);
+        link.click();
+        window.open(link, null);
+        document.body.removeChild(link);
+    }
+
+
     function downloadCompletedReport(value) {
         const reportToDownload = {
             file: value
         }
-        // console.log(reportToDownload.file)
-
-        // console.log(reportToDownload)
-
         //----------------------------------
-
-        axios.post("http://localhost:8080/userreporttodownload", reportToDownload)
-            .then(async res => {
-                // console.log(res.data)
-                // const url = window.URL.createObjectURL(new Blob([res.data]));
-                // const link = document.createElement('a');
-                // link.href = url;
-                // link.setAttribute('download', `${reportToDownload.file}`);
-                // document.body.appendChild(link);
-                // link.click();
-                // res.blob().then(blob => {
-                //     let url = window.URL.createObjectURL(blob);
-                //     let a = document.createElement('a');
-                //     a.href = url;
-                //     a.download = `${reportToDownload.file}`;
-                //     a.click();
-                // });
-                // let link = document.createElement("a");
-                // link.download = `${reportToDownload.file}`;
-                // let blob = new Blob(["Hello, world!"], { type: "text/plain" });
-                // link.href = URL.createObjectURL(blob);
-                // link.click();
-                // URL.revokeObjectURL(link.href);
-
-                console.log(res)
-                // //-------------------------
-                // const url = await window.URL.createObjectURL(new Blob([res.headers]));
-                // const link = document.createElement('a');
-                // link.href =  url;
-                // // link.setAttribute('download', `${reportToDownload.file}`);
-                // // link.setAttribute('download', `${reportToDownload.file}`);
-                // link.setAttribute('download', `armin 2017 (3).JPG`);
-                // document.body.appendChild(link);
-                // link.click();
-
+        axios.post('http://localhost:8080/downloadStoredfiles', reportToDownload)
+            .then(res => {
+                console.log(res.data)
+                saveAs(res.data, reportToDownload)
             })
+
         //----------------------------------
 
     }
@@ -233,7 +216,7 @@ export default function Requests() {
     return (
         <div>
             <div className="profile">
-                <div className="myDiv">
+                <div className="userprofileDiv">
                     <br />
                     <br />
                     <h1>Requests Here</h1>
@@ -245,7 +228,7 @@ export default function Requests() {
                     <br />
                 </div>
                 <br />
-                <div className="myDiv">
+                <div className="userprofileDiv">
                     <br />
                     <br />
                     <h1>Responds Here</h1>

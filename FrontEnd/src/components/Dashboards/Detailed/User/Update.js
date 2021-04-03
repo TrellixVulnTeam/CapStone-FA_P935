@@ -4,9 +4,9 @@ import Balance_Sheet from '../../../ServiceData/Balance_Sheet.xlsx';
 import Budget_Sheet from '../../../ServiceData/Balance_Sheet.xlsx';
 import fileDownload from 'js-file-download'
 import xlsx from 'xlsx'
-
+import SecureLS from "secure-ls"
 export default function Update() {
-
+    const securestorage = new SecureLS();
     const [filetoDownload, setfiletoDownload] = useState("")
     const [fileuploadoption, setfileuploadoption] = useState("")
     const [filetoupload, setfiletoupload] = useState("")
@@ -57,6 +57,8 @@ export default function Update() {
                     axios.post('http://localhost:8080/userfileupload', data)
                         .then(res => {
                             // console.log(res.data)
+                            setfileuploadoption("")
+                            setfiletoupload("")
                             console.log(res.data)
                         })
                     //--------------------------------------------------
@@ -70,7 +72,7 @@ export default function Update() {
     }
     return (
         <div className="profile">
-            <div className="myDiv">
+            <div className="userprofileDiv">
                 <br />
                 <br />
                 {/*----------------------------------------*/}
@@ -96,7 +98,7 @@ export default function Update() {
                 <br />
             </div>
             <br />
-            <div className="myDiv">
+            <div className="userprofileDiv">
                 <br />
                 <br />
                 <h1>2- Step Two: Fill up the template and upload</h1>

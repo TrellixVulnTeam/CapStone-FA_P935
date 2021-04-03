@@ -1,16 +1,60 @@
 import React from 'react'
 //import Footer from "../Footer"
 import Navbar from "../Navbar"
-
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import "../pages/About.css"
 function About() {
   return (
-    <div >
+    < >
       <Navbar />
-      <h1>This is about page</h1>
-      <p>What is Lorem Ipsum?
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+      <br />
+      <br />
+      <br />
+      <div className="about-container">
+        <Container>
 
-    </div>
+          <Row className="row">
+            <Col className="col">
+              <h3>Financial Advisor</h3>
+
+              <p>Is a Full Stack Devlopment Project that aims to ease consulting and data tracking service.</p>
+              <p>Is a Business Oriented Platform that focus on financial analysis using standard analysis methodologies</p>
+              <p>Focus on Financial Services Sector</p>
+            </Col>
+
+            <Col className="col">
+              <h3>Technology</h3>
+
+              <p>Front-End: React, Bootstrap, HTML, and CSS</p>
+              <p>Back-End: Node.JS, Express, and MongoDb</p>
+            </Col>
+          </Row>
+
+          <Row class="row">
+            <Col className="col">
+              <h2>Team</h2>
+              <h3 >Sureya Farah</h3>
+              <h3 >Adrian Filipe</h3>
+              <h3 >Sheak Aftakhar Rahman</h3>
+              <h3 >Kanta Husari</h3>
+            </Col>
+            <Col className="col">
+              <h2>Project Manager</h2>
+              <h2 >Professor Anjana Shah</h2>
+            </Col>
+            <Col className="col">
+              <h2>Institution</h2>
+              <h2 >George Brown College</h2>
+              <p >{`Center of ARTS, DESIGN & INFORMATION TECHNOLOGY`}</p>
+            </Col>
+          </Row>
+        </Container>
+      </div>
+
+
+    </>
   )
 }
 

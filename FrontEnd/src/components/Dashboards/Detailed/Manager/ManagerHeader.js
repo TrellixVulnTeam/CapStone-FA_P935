@@ -24,8 +24,6 @@ export default function ManagerHeader() {
 
             try {
                 //empty all catches
-    
-    
                 //and then direct to home page
                 localStorage.clear();
                 history.push('/')

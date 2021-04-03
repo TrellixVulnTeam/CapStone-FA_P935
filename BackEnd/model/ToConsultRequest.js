@@ -1,10 +1,4 @@
 const mongoose = require('mongoose');
-/*
-
-originalrow: "605c0feb49e4f83a48cd7174"
-
-
-*/
 const ToConsultRequestSchema = new mongoose.Schema(
     {
         consultant: {
@@ -45,23 +39,8 @@ const ToConsultRequestSchema = new mongoose.Schema(
         date: {
             type: Date,
             default: Date.now
-            // type: String,
-            // require: false,
+
         },
     }
 )
-
 module.exports = mongoose.model(`ToConsultRequest`, ToConsultRequestSchema)
-
-
-
-/*
-  consultant:,
-        user:,
-        topic:,
-        urgency:,
-        description:,
-        user_email:,
-        date:,
-
-*/

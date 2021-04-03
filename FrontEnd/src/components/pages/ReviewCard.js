@@ -1,4 +1,4 @@
-import { faQuoteLeft } from "@fortawesome/free-solid-svg-icons";
+// import { faQuoteLeft } from "@fortawesome/free-solid-svg-icons";
 import  {FontAwesomeIcon}  from "@fortawesome/react-fontawesome";
 import * as Icons from "@fortawesome/fontawesome-free-solid"
 import React from "react";

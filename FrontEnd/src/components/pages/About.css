@@ -1,0 +1,21 @@
+Container .about-container {
+  text-align: center;
+}
+
+.row {
+
+  text-align: center;
+  padding: 10px;
+  margin: 10px;
+  background-color: rgb(195, 194, 194);
+  border-radius: 50px;
+}
+.col {
+
+  text-align: center;
+  height: auto;
+  padding: 10px;
+  margin: 10px;
+  background-color: rgb(139, 139, 139);
+  border-radius: 50px;
+}

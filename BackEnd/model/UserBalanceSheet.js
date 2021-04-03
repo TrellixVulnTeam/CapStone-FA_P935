@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-
 const userBalanceSheetSchema = new mongoose.Schema(
     {
         indicator: {

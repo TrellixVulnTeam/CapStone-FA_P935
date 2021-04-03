@@ -1,10 +1,12 @@
-.myDiv {
-  border: 5px outset rgb(0, 174, 255);
-  background-color: rgb(191, 196, 216);
+.userprofileDiv {
+  border: 2px solid #444;
+  background-color: rgb(195, 194, 194);
   width: 90%;
   margin: auto;
   text-align: center;
+  border-radius: 8px;
 }
+
 .profile {
   text-align: center;
 }
@@ -13,7 +15,7 @@
 #customers {
   border-collapse: collapse;
   width: 100%;
-  table-layout : fixed;
+  table-layout: fixed;
 }
 
 #customers td {
@@ -26,13 +28,10 @@
   text-align: center;
 }
 
-
-
 /*Modals*/
-.profile-modal-button{
-margin-top: 290px;
+.profile-modal-button {
+  margin-top: 290px;
 }
-
 
 table {
   font-family: arial, sans-serif;
@@ -40,7 +39,8 @@ table {
   width: 100%;
 }
 
-td, th {
+td,
+th {
   border: 1px solid #dddddd;
   text-align: left;
   padding: 8px;
@@ -50,8 +50,8 @@ tr:nth-child(even) {
   background-color: #dddddd;
 }
 
-.Scroll_Pane{
-  overflow-y:scroll; 
-  overflow-x:hidden; 
-  height:250px
+.Scroll_Pane {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 250px;
 }

@@ -9,7 +9,7 @@ export default function Register() {
     //----------------------------------
     //const history = useHistory()
     const [error, setError] = useState("")
-
+    const history = useHistory()
     //use states:
     const [fname, setFname] = useState("")
     const [lname, setLname] = useState("")
@@ -47,7 +47,7 @@ export default function Register() {
                     setError(errorReport)
                     //console.log()
                     if (errorReport.length === 0 && res.data.keyValue.email.length <= 0) {
-                        //history.push('/')
+                        history.push('/')
                     } else {
                         if (res.data.keyValue.email.length > 0) {
                             setError("User Already Exist")
@@ -63,10 +63,11 @@ export default function Register() {
     }
     return (
         <>
-        
+
             <Navbar />
+            <br />
+            <br />
             <div className="col-sm-6 offset-sm-3">
-                <h1>Register Page</h1>
                 <input type="text" className="form-control" placeholder="First Name" onChange={(e) => setFname(e.target.value)} value={fname} /><br />
                 <input type="text" className="form-control" placeholder="Last Name" onChange={(e) => setLname(e.target.value)} value={lname} /><br />
                 <input type="text" className="form-control" placeholder="Phone Number" onChange={(e) => setPhone(e.target.value)} value={phone} /><br />
@@ -76,11 +77,12 @@ export default function Register() {
                 <button onClick={signUp} className="btn btn-primary">Sign Up</button>
                 <br />
                 <br />
-                <h1>{error}</h1>
+                <div>
+                    <h1>{error}</h1>
+                </div>
                 <br />
                 <br />
             </div>
-            {/* <div className='sign-up'></div> */}
         </>
     )
 }

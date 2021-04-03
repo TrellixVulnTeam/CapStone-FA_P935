@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-
 const ToManagerRequestSchema = new mongoose.Schema(
     {
         reporttype: {
@@ -36,10 +35,7 @@ const ToManagerRequestSchema = new mongoose.Schema(
         created: {
             type: Date,
             default: Date.now
-            // type: String,
-            // require: false,
         },
     }
 )
-
 module.exports = mongoose.model(`ToManagerRequest`, ToManagerRequestSchema)

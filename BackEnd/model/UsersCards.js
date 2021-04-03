@@ -1,10 +1,9 @@
 const mongoose = require('mongoose');
-
 const userCardSchema = new mongoose.Schema(
     {
         cardstatus: {
             type: String,
-            enum:['Active','InActive']
+            enum: ['Active', 'InActive']
         },
         card_holder: {
             type: String,
@@ -13,7 +12,7 @@ const userCardSchema = new mongoose.Schema(
         cardnumber: {
             type: String,
             required: [true, `Please enter card number`],
-            unique: [true,"card number already exists"],
+            unique: [true, "card number already exists"],
             validate(value) {
                 const regex = /^\d{4}-\d{4}-\d{4}-\d{4}$/
                 if (!regex.test(value)) {
@@ -54,7 +53,7 @@ const userCardSchema = new mongoose.Schema(
         email: {
             type: String,
             required: [true, `please enter an email`],
-            unique: [false,"it's ok"],
+            unique: [false, "it's ok"],
             validate(value) {
                 const regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
                 if (!regex.test(value)) {
@@ -64,5 +63,4 @@ const userCardSchema = new mongoose.Schema(
         },
     }
 )
-
 module.exports = mongoose.model(`UserCard`, userCardSchema)

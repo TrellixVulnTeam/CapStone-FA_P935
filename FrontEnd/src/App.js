@@ -12,7 +12,7 @@ import DashboardUser from "./components/Dashboards/DashboardUser"
 import DashboardManager from "./components/Dashboards/DashboardManager"
 import DashboardCon from "./components/Dashboards/DashboardCon"
 import Modal, { contextType } from "react-modal"
-import Auth from "./components/Authentication/Auth"
+import SecureLS from "secure-ls"
 
 
 
@@ -21,38 +21,46 @@ Modal.setAppElement('#root')
 
 function App() {
 
-  const loggedInUser = localStorage.getItem("user");
-  const loginStatus = localStorage.getItem("LoginStatus");
-  
-
-
-  console.log(`this is Before use effect ${loginStatus}`)
+  const securestorage = new SecureLS();
 
   function checkLoginUser() {
     // if (isLoggedIn === false || isLoggedIn===null) {
-    if (localStorage.getItem("LoginStatus")===null) {
-      return <div>{`404 Page Not Found `}</div>
+    if (localStorage.getItem("LoginStatus") === null && localStorage.getItem("LoginAuthLevel") === null) {
+      return <div>404 Page Not Found </div>
     } else {
-      return <DashboardUser />
+      if (securestorage.get("LoginAuthLevel") === "user") {
+        return <DashboardUser />
+      } else {
+        return (
+          <div>Please Logout First</div>
+        )
+      }
     }
   }
   function checkLoginManager() {
-    if (localStorage.getItem("LoginStatus")===null) {
+    if (localStorage.getItem("LoginStatus") === null && localStorage.getItem("LoginAuthLevel") === null) {
       return <div>404 Page Not Found </div>
     } else {
-      return <DashboardManager />
+      if (securestorage.get("LoginAuthLevel") === "manager") {
+        return <DashboardManager />
+      } else {
+        <div>Please Logout First</div>
+      }
     }
   }
   function checkLoginConsultant() {
-    if (localStorage.getItem("LoginStatus")===null) {
+    if (localStorage.getItem("LoginStatus") === null && localStorage.getItem("LoginAuthLevel") !== "consult") {
       return <div>404 Page Not Found </div>
     } else {
-      return <DashboardCon />
+      if (securestorage.get("LoginAuthLevel") === "consult") {
+        return <DashboardCon />
+      } else {
+        <div>Please Logout First</div>
+      }
     }
   }
   return (
     <>
-
       <Router>
         {/*<Navbar />*/}
         <Switch>
@@ -72,10 +80,3 @@ function App() {
 }
 
 export default App;
-
-
-/* <Route
-  exact
-  path="/"
-  component={loading ? () => <div>Loading posts...</div> : () => <Home posts={posts} />}
-/> */

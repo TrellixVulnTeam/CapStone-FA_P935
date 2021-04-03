@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Footer.css';
-import { Button } from './Button';
 import { Link } from 'react-router-dom';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
+import Popover from 'react-bootstrap/Popover'
+
 
 function Footer() {
   return (
@@ -21,7 +23,7 @@ function Footer() {
               type='email'
               placeholder='Your Email'
             />
-            <Button buttonStyle='btn--outline'>Subscribe</Button>
+            <button className='btn--outline'>Subscribe</button>
           </form>
         </div>
       </section>
@@ -37,96 +39,61 @@ function Footer() {
           </div>
           <div className='footer-link-items'>
             <h2>Development Team</h2>
-            <Link to='/'>Project Manager</Link>
-            <Link to='/'>Team</Link>
-            <Link to='/'>George Brown College</Link>
+            {['right'].map((placement) => (
+              <OverlayTrigger
+                trigger="click"
+                key={placement}
+                placement={placement}
+                overlay={
+                  <Popover id={`popover-positioned-${placement}`}>
+                    <Popover.Title as="h3">{`Professor:`}</Popover.Title>
+                    <Popover.Content>
+                      Anjana Shah
+                    </Popover.Content>
+                  </Popover>
+                }
+              >
+                <button className='btn--outline'>Project Manager</button>
+              </OverlayTrigger>
+            ))}
+            <br />
+            {['right'].map((placement) => (
+              <OverlayTrigger
+                trigger="click"
+                key={placement}
+                placement={placement}
+                overlay={
+                  <Popover id={`popover-positioned-${placement}`}>
+                    <Popover.Title as="h3">{`Developers:`}</Popover.Title>
+                    <Popover.Content>
+                      <p>Sureya Farah</p>
+                      <p>Adrian Filipe</p>
+                      <p>Sheak Aftakhar Rahman</p>
+                      <p>Kanta Husari</p>
+                    </Popover.Content>
+                  </Popover>
+                }
+              >
+                <button className='btn--outline'>Team</button>
+              </OverlayTrigger>
+            ))}
+            <br />
+            <a href='https://www.georgebrown.ca/' rel="noreferrer" target="_blank">George Brown College</a>
           </div>
         </div>
         <div className='footer-link-wrapper'>
-
-
         </div>
       </div>
       <section className='social-media'>
         <div className='social-media-wrap'>
           <div className='footer-logo'>
-            <Link to='/' className='social-logo'>
-              Financial Advisor
-            </Link>
+            <h3 className='social-logo'>
+              Financial Advisor © 2021
+            </h3>
           </div>
-          <small className='website-rights'>Financial Advisor © 2021</small>
         </div>
       </section>
     </div>
   );
 }
-
 export default Footer;
-
-
-
-/*
-Deleted Items:
-          <div class='footer-link-items'>
-            <h2>Videos</h2>
-            <Link to='/'>Submit Video</Link>
-            <Link to='/'>Ambassadors</Link>
-            <Link to='/'>Agency</Link>
-            <Link to='/'>Influencer</Link>
-          </div>
-
-          <div class='footer-link-items'>
-            <h2>Social Media</h2>
-            <Link to='/'>Instagram</Link>
-            <Link to='/'>Facebook</Link>
-            <Link to='/'>Youtube</Link>
-            <Link to='/'>Twitter</Link>
-          </div>
-
-
-
-
-
-                    <div class='social-icons'>
-            <Link
-              class='social-icon-link facebook'
-              to='/'
-              target='_blank'
-              aria-label='Facebook'
-            >
-              <i class='fab fa-facebook-f' />
-            </Link>
-            <Link
-              class='social-icon-link instagram'
-              to='/'
-              target='_blank'
-              aria-label='Instagram'
-            >
-              <i class='fab fa-instagram' />
-            </Link>
-            <Link
-              class='social-icon-link youtube'
-              to='/'
-              target='_blank'
-              aria-label='Youtube'
-            >
-              <i class='fab fa-youtube' />
-            </Link>
-            <Link
-              class='social-icon-link twitter'
-              to='/'
-              target='_blank'
-              aria-label='Twitter'
-            >
-              <i class='fab fa-twitter' />
-            </Link>
-            <Link
-              class='social-icon-link twitter'
-              to='/'
-              target='_blank'
-              aria-label='LinkedIn'
-            >
-              <i class='fab fa-linkedin' />
-            </Link>
-          </div>
-*/

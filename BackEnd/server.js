@@ -13,8 +13,16 @@ app.use(cors()) // Use this after the variable declaration
 app.use(express.json());
 app.use(UserRoutes);
 
-//url
+//-----------------------------------
 
+
+//-----------------------------------
+
+
+
+
+
+//url
 const server = () => {
     const url = 'mongodb+srv://kantahusari:ELCt0MAHWOXF2MA1@lt01.tkoun.mongodb.net/CapStone?retryWrites=true&w=majority'
     mongoose.connect(url,

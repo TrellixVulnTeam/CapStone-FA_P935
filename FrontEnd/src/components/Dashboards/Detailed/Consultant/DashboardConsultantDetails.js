@@ -2,8 +2,9 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import moment from 'moment'
 import "./ConsultantStyles.css"
-
+import SecureLS from "secure-ls"
 export default function DashboardConsultantDetails() {
+    const securestorage = new SecureLS();
     const [consultant, setconsultant] = useState("")
     const [consultantId, setconsultantId] = useState("")
     const [consultantRequests, setconsultantRequests] = useState([])
@@ -11,12 +12,11 @@ export default function DashboardConsultantDetails() {
     const [filetoupload, setfiletoupload] = useState("")
     const [seconds, setSeconds] = useState(0);
     const [pageRefresh, setpageRefresh] = useState(0)
-
     const [error, seterror] = useState("")
 
     useEffect(() => {
         const user = {
-            "email": localStorage.getItem("user")
+            "email": securestorage.get("user")
         }
         const interval = setInterval(() => {
             axios.post('http://localhost:8080/findconsult', user)
@@ -111,7 +111,7 @@ export default function DashboardConsultantDetails() {
                 user_email: postdata.user_email,
                 _id: postdata._id
             }
-            const requesttodelete={
+            const requesttodelete = {
                 consultant: postdata.consultant,
                 user: postdata.user,
                 topic: postdata.topic,
@@ -128,7 +128,12 @@ export default function DashboardConsultantDetails() {
             axios.post('http://localhost:8080/consultfileupload', data)
                 .then(res => {
                     console.log(res.data)
-                }).finally(
+                })
+            axios.post('http://localhost:8080/donothing', "")
+                .then(res => {
+                    console.log(res)
+                })
+                .finally(
                     //rename file and post data to server
                     axios.post('http://localhost:8080/consulttouserreports', requesttosend)
                         .then(res => {
@@ -141,6 +146,7 @@ export default function DashboardConsultantDetails() {
                 .then(res => {
                     console.log(res)
                 })
+            setfiletoupload("")
 
         }
     }
@@ -181,7 +187,7 @@ export default function DashboardConsultantDetails() {
     return (
         <div className="cprofile">
             {/*Received Here*/}
-            <div className="myDiv">
+            <div className="userprofileDiv">
                 <br />
                 <br />
                 <h1>Requests Received</h1>
@@ -189,11 +195,10 @@ export default function DashboardConsultantDetails() {
                 <br />
                 <br />
             </div>
-
             <br></br>
 
             {/*Responds  Here*/}
-            <div className="myDiv">
+            <div className="userprofileDiv">
                 <br />
                 <br />
                 <h1>Completed</h1>
@@ -202,7 +207,7 @@ export default function DashboardConsultantDetails() {
                 <br />
             </div>
             <br />
-                <br />
+            <br />
         </div>
     )
 }
