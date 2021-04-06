@@ -32,33 +32,26 @@ export default function Register() {
         if (password !== repassword) {
             setError("Passwords does not match")
         } else {
-            console.log(user)
+            // console.log(user)
             axios.post('http://localhost:8080/user', user)
                 .then(res => {
-                    //console.log(res.data.errors.email.message)
                     console.log(res)
-                    let errors = res.data.errors
-                    let errorReport = []
-                    console.log(`errors are here ${errors}`)
-                    for (const property in errors) {
-                        console.log(`${property}: ${errors[property].message}`);
-                        errorReport.push(`${property}: ${errors[property].message}`)
-                    }
-                    setError(errorReport)
-                    //console.log()
-                    if (errorReport.length === 0 && res.data.keyValue.email.length <= 0) {
-                        history.push('/')
-                    } else {
-                        if (res.data.keyValue.email.length > 0) {
+                    if (res.data.errors === null || res.data.errors === undefined) {
+                        if (res.data.keyValue === null || res.data.keyValue === undefined) {
+                            history.push('/')
+                        } else if (res.data.keyValue.email.length > 0) {
                             setError("User Already Exist")
-                        } else if (errorReport.length !== 0) {
-                            setError(errorReport)
                         }
+                    } else {
+                        let errors = res.data.errors
+                        let errorReport = []
+                        for (const property in errors) {
+                            errorReport.push(`${property}: ${errors[property].message}`)
+                        }
+                        setError(errorReport)
                     }
                 })
-                .catch(error => {
-                    console.log(`Something went wrong ${error}`)
-                })
+
         }
     }
     return (

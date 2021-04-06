@@ -32,7 +32,7 @@ function About() {
             </Col>
           </Row>
 
-          <Row class="row">
+          <Row className="row">
             <Col className="col">
               <h2>Team</h2>
               <h3 >Sureya Farah</h3>

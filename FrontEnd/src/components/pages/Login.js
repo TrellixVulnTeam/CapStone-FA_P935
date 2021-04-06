@@ -82,7 +82,9 @@ function Login() {
 
       <Navbar />
       <div className="col-sm-6 offset-sm-3">
-        <h1>Login Page</h1>
+        <br />
+        <br />
+        <br />
         <input type="text" className="form-control" placeholder="Email" onChange={(e) => setEmail(e.target.value)} value={email} /><br />
         <input type="password" className="form-control" placeholder="Password" onChange={(e) => setPassword(e.target.value)} value={password} /><br />
         <button onClick={logIn} className="btn btn-primary">Login</button>

@@ -81,16 +81,11 @@ export default function DashboardConsultantDetails() {
                                 </tr>
                             )
                         }
-
-
-
-
                     </tbody>
                 </table>
             )
         }
     }
-
     function postfile(e, postdata) {
         e.preventDefault();
         if (filetoupload === "" || filetoupload === null || filetoupload === undefined) {
@@ -147,10 +142,8 @@ export default function DashboardConsultantDetails() {
                     console.log(res)
                 })
             setfiletoupload("")
-
         }
     }
-
     function displayCompleted() {
         if (toUserRequests.length === 0) {
             return (
