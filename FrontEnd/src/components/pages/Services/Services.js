@@ -15,7 +15,7 @@ import img from './images/insight.jpg'
 import img2 from './images/plan.jpg'
 import img3 from './images/img3.jpg'
 import "pure-react-carousel/dist/react-carousel.es.css";
-import Fade from 'react-reveal/Fade';
+// import Fade from 'react-reveal/Fade';
 import User1Img from "./images/img-5.jpg";
 import User2Img from "./images/img-5.jpg";
 import User3Img from "./images/img-5.jpg";
@@ -125,63 +125,63 @@ export function Services() {
 
   return (
     <>
-    <div className ="dd"> <Navbar /></div>
- 
+      <div className="dd"> <Navbar /></div>
 
-    <Carousel>
-  <Carousel.Item>
-    <img
-      className="d-block w-100"
-      src={img} 
-      alt="First slide"
-    />
-    <Carousel.Caption>
-      <h2 className = "serviceH2" > <br></br><br></br><br></br>Personal Service Insight</h2>
-      <h2 className = "serviceH3">Create Your Finicial Solutions</h2>
-      <p className="mainP">Learn how our Finicial advisers can work with you to create a strategy built around your life and your priorities.</p>
-    </Carousel.Caption>
-  </Carousel.Item>
-  <Carousel.Item>
-    <img
-      className="d-block w-100"
-      src={img3} 
-      alt="Second slide"
-    />
 
-    <Carousel.Caption>
-    <h2 className = "serviceH2">Our Core Values</h2>
-      <h2 className = "serviceH3">Your Unique Life. Our Guided Approach.</h2>
-      <p className="mainP">The money decisions you make today lay the foundation for a successful lifetime and legacy. As your dedicated personal advisor, we can assist you in managing your budget, investments, insurance coverage, and other important factors that contribute to your overall financial big picture.</p>
-    </Carousel.Caption>
-  </Carousel.Item>
-  <Carousel.Item>
-    <img
-      className="d-block w-100"
-      src={img2}
-      alt="Third slide"
-    />
+      <Carousel>
+        <Carousel.Item>
+          <img
+            className="d-block w-100"
+            src={img}
+            alt="First slide"
+          />
+          <Carousel.Caption>
+            <h2 className="serviceH2" > <br></br><br></br><br></br>Personal Service Insight</h2>
+            <h2 className="serviceH3">Create Your Finicial Solutions</h2>
+            <p className="mainP">Learn how our Finicial advisers can work with you to create a strategy built around your life and your priorities.</p>
+          </Carousel.Caption>
+        </Carousel.Item>
+        <Carousel.Item>
+          <img
+            className="d-block w-100"
+            src={img3}
+            alt="Second slide"
+          />
 
-    <Carousel.Caption>
-    <h2 className = "serviceH2">Services For Business Owner</h2>
-      <h2 className = "serviceH3">We can help you save up for your bussiness</h2>
-      <p className="mainP"> Consultants Can Easily Access Funds For You To: Take your business online and secure your profit</p>
-      <Button
-          className='btns'
-          buttonStyle='btn--primary'
-          buttonSize='btn--large'
-          onClick= {(e) => {
-            e.preventDefault();
-            window.location.href='https://www.youtube.com/watch?v=RcN3gEiMihI';
-            }}
-        >Learn More <i className='far fa-play-circle' /></Button>
-    </Carousel.Caption>
-  </Carousel.Item>
-</Carousel>
-  
-   <Fade bottom>
+          <Carousel.Caption>
+            <h2 className="serviceH2">Our Core Values</h2>
+            <h2 className="serviceH3">Your Unique Life. Our Guided Approach.</h2>
+            <p className="mainP">The money decisions you make today lay the foundation for a successful lifetime and legacy. As your dedicated personal advisor, we can assist you in managing your budget, investments, insurance coverage, and other important factors that contribute to your overall financial big picture.</p>
+          </Carousel.Caption>
+        </Carousel.Item>
+        <Carousel.Item>
+          <img
+            className="d-block w-100"
+            src={img2}
+            alt="Third slide"
+          />
 
- </Fade>
- <div className="accordion">
+          <Carousel.Caption>
+            <h2 className="serviceH2">Services For Business Owner</h2>
+            <h2 className="serviceH3">We can help you save up for your bussiness</h2>
+            <p className="mainP"> Consultants Can Easily Access Funds For You To: Take your business online and secure your profit</p>
+            <Button
+              className='btns'
+              buttonStyle='btn--primary'
+              buttonSize='btn--large'
+              onClick={(e) => {
+                e.preventDefault();
+                window.location.href = 'https://www.youtube.com/watch?v=RcN3gEiMihI';
+              }}
+            >Learn More <i className='far fa-play-circle' /></Button>
+          </Carousel.Caption>
+        </Carousel.Item>
+      </Carousel>
+
+      {/* <Fade bottom>
+
+      </Fade> */}
+      <div className="accordion">
         <Accordion defaultActiveKey="0">
 
           <Card className="accordion">
@@ -267,29 +267,29 @@ export function Services() {
 
         </Accordion>
       </div>
- <div class = "table">
+      <div class="table">
         <div class="row">
-                <div class="column" xs={6} md={4}>
-                      <div className ="tdata">
-                        <img className="image" src = {invest}/>
-                        <p className="para"> We’re at your service. You offer customers an exceptional experience; we are passionate about giving you an exceptional experience as well. <br/> 
-                        We have a proven process. Our roadmap allows us to confidently meet our commitments to you, but is still adaptable to meet each client’s unique needs and expectations.</p>
-                        </div>
-                      </div>
-                      <div class="column" xs={6} md={4}>
-                        <div className ="tdata">
-                      <img className="image" src = {dashboard}/>
-                        <p className = "para">Our client’s foremost desire is to first preserve their capital, and second to grow their capital. We want our clients to know exactly what they are investing. Learn how our finicial advisers can work with you to create a strategy built around your life and your priorities. </p>
-                        </div>
-                      </div>
-                      <div class="column"xs={6} md={4}>
-                      <div className ="tdata">
-                      <img className="image" src = {retire}/>
-                        <p className="para">The most ignored part of your everyday money life is your retirement. For some, retirement is decades away, so why think about it now? Others feel that they’re so far behind on savings that their situation is hopeless. Neither is true. It’s never too late to start saving. Equally true: It’s never too early. <br/>Start Planning Your Retirement with Us</p>
-                        </div>
-                </div>
+          <div class="column" xs={6} md={4}>
+            <div className="tdata">
+              <img className="image" src={invest} />
+              <p className="para"> We’re at your service. You offer customers an exceptional experience; we are passionate about giving you an exceptional experience as well. <br />
+                We have a proven process. Our roadmap allows us to confidently meet our commitments to you, but is still adaptable to meet each client’s unique needs and expectations.</p>
+            </div>
+          </div>
+          <div class="column" xs={6} md={4}>
+            <div className="tdata">
+              <img className="image" src={dashboard} />
+              <p className="para">Our client’s foremost desire is to first preserve their capital, and second to grow their capital. We want our clients to know exactly what they are investing. Learn how our finicial advisers can work with you to create a strategy built around your life and your priorities. </p>
+            </div>
+          </div>
+          <div class="column" xs={6} md={4}>
+            <div className="tdata">
+              <img className="image" src={retire} />
+              <p className="para">The most ignored part of your everyday money life is your retirement. For some, retirement is decades away, so why think about it now? Others feel that they’re so far behind on savings that their situation is hopeless. Neither is true. It’s never too late to start saving. Equally true: It’s never too early. <br />Start Planning Your Retirement with Us</p>
+            </div>
+          </div>
+        </div>
       </div>
- </div>
 
       <ReviewsContainer>
         <SectionTitle>What others are saying about us</SectionTitle>
@@ -334,9 +334,9 @@ export function Services() {
           <StyledDotGroup />
         </StyledCarouselProvider>
       </ReviewsContainer>
-     
-     
-   </>   
+
+
+    </>
   );
 }
 
