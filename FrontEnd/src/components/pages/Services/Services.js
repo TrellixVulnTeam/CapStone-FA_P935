@@ -1,76 +1,187 @@
 import { CarouselProvider, DotGroup, Slide, Slider } from "pure-react-carousel";
+import Carousel from 'react-bootstrap/Carousel'
 import * as React from "react";
-// import { Element } from "react-scroll";
-// import styled from "styled-components";
-// import { Marginer } from "./marginer";
-// import { ReviewCard } from '../ReviewCard';
-// import { SectionTitle } from "./sectionTitle";
-import { useMediaQuery } from "react-responsive";
-import Navbar from "../../Navbar"
+import { Element } from "react-scroll";
+import './Services.css'
 import Accordion from 'react-bootstrap/Accordion'
 import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
-import "../Services/Services.css"
-
-
+import styled from "styled-components";
+import { Marginer } from "./marginer";
+import { ReviewCard } from './ReviewCard';
+import { SectionTitle } from "./sectionTitle";
+import { useMediaQuery } from "react-responsive";
+import img from './images/insight.jpg'
+import img2 from './images/plan.jpg'
+import img3 from './images/img3.jpg'
 import "pure-react-carousel/dist/react-carousel.es.css";
+import Fade from 'react-reveal/Fade';
+import User1Img from "./images/img-5.jpg";
+import User2Img from "./images/img-5.jpg";
+import User3Img from "./images/img-5.jpg";
+import User4Img from "./images/img-5.jpg";
+import invest from "./images/about.jpg";
+import dashboard from "./images/dash.jpg"
+import retire from "./images/img9.jpg"
+import { Buttons } from '../../Button';
+import Navbar from "../../Navbar"
 
-// import User1Img from "./images/img-5.jpg";
-// import User2Img from "./images/img-5.jpg";
-// import User3Img from "./images/img-5.jpg";
-// import User4Img from "./images/img-5.jpg";
+const ReviewsContainer = styled(Element)`
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: -418px;
+  bottom: 35px;
+  @media screen and (max-width: 1200px) {
+    width: 100%;
+    margin-top: -833px;
+   
+  }
+  @media screen and (min-width: 380px) and (max-width: 880px)
+{
+    width: 100%;
+    margin-top: -483px;
+}
+`;
+
+const StyledCarouselProvider = styled(CarouselProvider)`
+  margin-top: 1200px;
+  width: 50%;
+ 
+  @media screen and (max-width: 480px) {
+    width: 100%;
+   
+  }
+  @media screen and (max-width:  3341px) {
+    width: 100%;
+    margin-top: 806px;
+   
+  }
+`;
 
 
-// const ReviewsContainer = styled(Element)`
-//   height: 700px;
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-// `;
+const StyledSlide = styled(Slide)`
+  .carousel__inner-slide {
+    
+    display: flex;
+    justify-content: center;
+    background-image: linear-gradient( to right, #b9b9b9, #9e9fa2 15%, #e5f0e7 15%, #d7f0a2 85%,#d7f0a2 85%,#d7f0a2 85% );
+    left: 0;
+    width: 100%;
+    height: 76%;
+    
+  }
+  .carousel-inner {
+    position: relative;
+    width: 100%;
+    height: 549px;
+    overflow: hidden;
+}
+`;
+const StyledSlider = styled(Slider)`
+  .carousel__inner-slider {
+   
+    height: 549px;
+  } @media screen and (max-width: 480px) {
+    width: 100%;
+    height: 656px;
+  }
+  @media screen and (min-width: 480px)  and (max-width: 880px) {
+    width: 100%;
+    height: 456px;
+  }
+`;
 
-// const StyledCarouselProvider = styled(CarouselProvider)`
-//   width: 50%;
-//   @media screen and (max-width: 480px) {
-//     width: 100%;
-//   }
-// `;
-
-// const StyledSlide = styled(Slide)`
-//   .carousel__inner-slide {
-//     display: flex;
-//     justify-content: center;
-//   }
-// `;
-
-// const StyledDotGroup = styled(DotGroup)`
-//   margin: auto;
-//   display: flex;
-//   justify-content: center;
-//   button {
-//     width: 11px;
-//     height: 11px;
-//     border-radius: 50%;
-//     background-color: #e4e4e4;
-//     border: none;
-//     outline: none;
-//     &:not(:last-of-type) {
-//       margin-right: 3px;
-//     }
-//   }
-//   .carousel__dot--selected {
-//     background-color: #c4c4c4;
-//   }
-// `;
+const StyledDotGroup = styled(DotGroup)`
+  margin: auto;
+  display: flex;
+  padding-top: 3em;
+  margin-top: -892px;
+  justify-content: center;
+  button {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background-color: #e4e4e4;
+    border: none;
+    outline: none;
+    &:not(:last-of-type) {
+      margin-right: 3px;
+    }
+    @media screen and (min-width: 380px) and (max-width: 880px)
+  {
+      width: 100%;
+      margin-top: -856px;
+  }
+  }
+  .carousel__dot--selected {
+    background-color: #79a37a;
+  }
+  
+`;
 export function Services() {
-  // const isMobile = useMediaQuery({ query: "(max-width: 480px)" });
+  const isMobile = useMediaQuery({ query: "(max-width: 480px)" });
 
   return (
     <>
-      <Navbar />
-      <br />
-      <br />
-      <br />
-      <div className="accordion">
+    <div className ="dd"> <Navbar /></div>
+ 
+
+    <Carousel>
+  <Carousel.Item>
+    <img
+      className="d-block w-100"
+      src={img} 
+      alt="First slide"
+    />
+    <Carousel.Caption>
+      <h2 className = "serviceH2" > <br></br><br></br><br></br>Personal Service Insight</h2>
+      <h2 className = "serviceH3">Create Your Finicial Solutions</h2>
+      <p className="mainP">Learn how our Finicial advisers can work with you to create a strategy built around your life and your priorities.</p>
+    </Carousel.Caption>
+  </Carousel.Item>
+  <Carousel.Item>
+    <img
+      className="d-block w-100"
+      src={img3} 
+      alt="Second slide"
+    />
+
+    <Carousel.Caption>
+    <h2 className = "serviceH2">Our Core Values</h2>
+      <h2 className = "serviceH3">Your Unique Life. Our Guided Approach.</h2>
+      <p className="mainP">The money decisions you make today lay the foundation for a successful lifetime and legacy. As your dedicated personal advisor, we can assist you in managing your budget, investments, insurance coverage, and other important factors that contribute to your overall financial big picture.</p>
+    </Carousel.Caption>
+  </Carousel.Item>
+  <Carousel.Item>
+    <img
+      className="d-block w-100"
+      src={img2}
+      alt="Third slide"
+    />
+
+    <Carousel.Caption>
+    <h2 className = "serviceH2">Services For Business Owner</h2>
+      <h2 className = "serviceH3">We can help you save up for your bussiness</h2>
+      <p className="mainP"> Consultants Can Easily Access Funds For You To: Take your business online and secure your profit</p>
+      <Button
+          className='btns'
+          buttonStyle='btn--primary'
+          buttonSize='btn--large'
+          onClick= {(e) => {
+            e.preventDefault();
+            window.location.href='https://www.youtube.com/watch?v=RcN3gEiMihI';
+            }}
+        >Learn More <i className='far fa-play-circle' /></Button>
+    </Carousel.Caption>
+  </Carousel.Item>
+</Carousel>
+  
+   <Fade bottom>
+
+ </Fade>
+ <div className="accordion">
         <Accordion defaultActiveKey="0">
 
           <Card className="accordion">
@@ -156,9 +267,31 @@ export function Services() {
 
         </Accordion>
       </div>
+ <div class = "table">
+        <div class="row">
+                <div class="column" xs={6} md={4}>
+                      <div className ="tdata">
+                        <img className="image" src = {invest}/>
+                        <p className="para"> We’re at your service. You offer customers an exceptional experience; we are passionate about giving you an exceptional experience as well. <br/> 
+                        We have a proven process. Our roadmap allows us to confidently meet our commitments to you, but is still adaptable to meet each client’s unique needs and expectations.</p>
+                        </div>
+                      </div>
+                      <div class="column" xs={6} md={4}>
+                        <div className ="tdata">
+                      <img className="image" src = {dashboard}/>
+                        <p className = "para">Our client’s foremost desire is to first preserve their capital, and second to grow their capital. We want our clients to know exactly what they are investing. Learn how our finicial advisers can work with you to create a strategy built around your life and your priorities. </p>
+                        </div>
+                      </div>
+                      <div class="column"xs={6} md={4}>
+                      <div className ="tdata">
+                      <img className="image" src = {retire}/>
+                        <p className="para">The most ignored part of your everyday money life is your retirement. For some, retirement is decades away, so why think about it now? Others feel that they’re so far behind on savings that their situation is hopeless. Neither is true. It’s never too late to start saving. Equally true: It’s never too early. <br/>Start Planning Your Retirement with Us</p>
+                        </div>
+                </div>
+      </div>
+ </div>
 
-
-      {/* <ReviewsContainer>
+      <ReviewsContainer>
         <SectionTitle>What others are saying about us</SectionTitle>
         <Marginer direction="vertical" margin="3em" />
         <StyledCarouselProvider
@@ -168,7 +301,7 @@ export function Services() {
           visibleSlides={isMobile ? 1 : 2}
           dragEnabled={false}
         >
-          <Slider>
+          <StyledSlider>
             <StyledSlide index={0}>
               <ReviewCard
                 reviewText=" I very much enjoyed working with Beema and the team - they have an excellent grasp of their subject, and have created something great for us."
@@ -178,36 +311,32 @@ export function Services() {
             </StyledSlide>
             <StyledSlide index={1}>
               <ReviewCard
-                reviewText=" I very much enjoyed working with Beema and the team - they have an excellent grasp of their subject, and have created something great for us."
-                username="John coner"
+                reviewText="Finding Financial support for small business is not always easy! Thanks to the Thinking Capital and their team  for working with us in achieving our goals. The team has been very helpful and insightful."
+                username="Marci Demi"
                 userImgUrl={User2Img}
               />
             </StyledSlide>
             <StyledSlide index={2}>
               <ReviewCard
-                reviewText=" I very much enjoyed working with Beema and the team - they have an excellent grasp of their subject, and have created something great for us."
-                username="John coner"
+                reviewText="Excellent staff and rates are lowest compared to others. I have an account with this company for four years I recommend them."
+                username="Erin Sterns"
                 userImgUrl={User3Img}
               />
             </StyledSlide>
             <StyledSlide index={3}>
               <ReviewCard
-                reviewText=" I very much enjoyed working with Beema and the team - they have an excellent grasp of their subject, and have created something great for us."
-                username="John coner"
+                reviewText="The kindness you showed a small business owner like myself was so incredible. Going through such tumultuous pathways through the Global Business Shutdown was so uncertain for a small business owner like myself."
+                username="Kobe Mice"
                 userImgUrl={User4Img}
               />
             </StyledSlide>
-          </Slider>
-
+          </StyledSlider>
           <StyledDotGroup />
         </StyledCarouselProvider>
       </ReviewsContainer>
-      <p>What is Lorem Ipsum?
-        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-      </p>
-      <br/>
-      <br/>
-      <br/> */}
-    </>
+     
+     
+   </>   
   );
 }
+

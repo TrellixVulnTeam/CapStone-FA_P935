@@ -87,9 +87,9 @@ function Footer() {
       <section className='social-media'>
         <div className='social-media-wrap'>
           <div className='footer-logo'>
-            <h3 className='social-logo'>
+            <h4 className='social-logo'>
               Financial Advisor © 2021
-            </h3>
+            </h4>
           </div>
         </div>
       </section>

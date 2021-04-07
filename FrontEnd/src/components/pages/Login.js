@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-d
 import SecureLS from "secure-ls"
 // var ls = new SecureLS();
 
-
+import 'font-awesome/css/font-awesome.min.css';
 
 function Login() {
   const securestorage = new SecureLS();

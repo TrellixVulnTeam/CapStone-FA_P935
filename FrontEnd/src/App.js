@@ -5,9 +5,9 @@ import './App.css';
 import Home from './components/pages/Home';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import { Services } from './components/pages/Services/Services';
-import About from './components/pages/About';
-import Register from './components/pages/Register';
-import Login from './components/pages/Login';
+import About from './components/pages/About/About';
+import Register from './components/pages/Register/Register';
+import Login from './components/pages/Login/Login';
 import DashboardUser from "./components/Dashboards/DashboardUser"
 import DashboardManager from "./components/Dashboards/DashboardManager"
 import DashboardCon from "./components/Dashboards/DashboardCon"

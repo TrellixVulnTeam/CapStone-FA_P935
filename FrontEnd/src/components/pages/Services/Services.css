@@ -1,3 +1,126 @@
+ *{
+   box-sizing: border-box;
+ }
+
+.mainP {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-family: monospace;
+  color: black;
+  font-weight: 400;
+}
+.dd {
+  color: black;
+}
+.image{
+    vertical-align: middle;
+    border-style: none;
+    width: 100%;
+    margin: 0 0 10px 0;
+    padding-right: 0;
+    height: inherit;
+    position: inherit;
+
+}
+  .serviceH2 > .serviceH3{
+    text-align: left;
+    margin-top: -927px;
+    font-size: 60px;
+  }
+  .mainP{
+    text-align: left;
+    font-size: 25px;
+    color:#354e2d;
+    font-weight: 900;
+  }
+  .serviceH2{
+    color: #9abe89;
+    text-align: left;
+    margin-top: -527px;
+    font-size: 38px;
+    font-weight: 900;
+
+  }
+ .serviceH3{
+    text-align: left;
+    color: #669551;
+    font-size: 33px;
+  }
+  /* Create three equal columns that floats next to each other */
+  .column {
+    float: left;
+    width: 33.33%;
+    padding: 10px;
+    height: 556px; /* Should be removed. Only for demonstration */
+    background-color:rgb(255, 255, 255);
+   
+    margin-bottom: -204px;
+  }
+  .tables {
+    border-spacing: 1em;
+    margin: 1rem auto;
+  }
+  .tdata {
+    background: #eee;
+    border: 1px solid transparent;
+    padding: 1rem 1.2rem;
+    border-radius: 6px;
+   
+  }
+  
+  #border-separate:checked ~ table {
+    border-collapse: separate;
+  }
+  
+  #border-collapse:checked ~ table {
+    border-collapse: collapse;
+  }
+  /* Clear floats after the columns */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+   
+  }
+  
+  .end{
+    background-color: rgb(63, 70, 76);
+    margin-bottom: 2rem; 
+    
+}
+
+ 
+  /* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+  @media screen and (max-width: 480px) {
+    .column  {
+      width: fit-content;
+      margin-bottom: 12rem;
+    }
+   
+      
+   .para{
+   
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
+  }
+    
+  }
+  @media screen and (max-width: 1240px) {
+    .column  {
+     
+      margin-bottom: 12rem;
+    }
+    
+ .para{
+  
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
+  }
+}
+  @media screen and (max-width: 960px){
+  .table {
+      margin-bottom: -10em;
+  }
+}
 .accordion {
   text-align: center;
 }
+  

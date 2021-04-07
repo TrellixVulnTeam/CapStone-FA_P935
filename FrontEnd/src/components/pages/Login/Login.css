@@ -1,0 +1,12 @@
+button:not(:disabled) {
+    cursor: pointer;
+    width: inherit;
+}
+
+.form-control:focus {
+    border-color: 2px #141c25;
+    box-shadow: none;
+    font-family: FontAwesome;
+  }
+
+
